@@ -1,14 +1,14 @@
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import useStyle from "./style";
 import { Pagination, PaginationItem } from "@material-ui/lab";
-import { Paper } from "@material-ui/core";
+import { CircularProgress, Paper } from "@material-ui/core";
 
 import { getPosts, getPaginate } from "../../actions/posts";
 
-const Paginate = ({ page }) => {
+const Paginate = ({ page, postsTop }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -17,31 +17,34 @@ const Paginate = ({ page }) => {
   const [getPostsLoading, setGetPostsLoading] = useState(false);
 
   useEffect(() => {
-    const startGetPosts = () => {
-      dispatch(getPosts(page));
-      dispatch(getPaginate());
-    };
     const loading = async () => {
       setGetPostsLoading(true);
-      await startGetPosts();
-      if (!unmount.current) setGetPostsLoading(false);
+      await Promise.all([dispatch(getPosts(page)), dispatch(getPaginate())]);
+      if (!unmount.current) {
+        setGetPostsLoading(false);
+        postsTop.current.scrollIntoView({ behavior: "smooth" });
+      }
     };
     loading();
+  }, [page, location, dispatch, postsTop]);
+
+  useEffect(() => {
     return () => {
       unmount.current = true;
     };
-  }, [page, location, dispatch]);
+  }, []);
 
   return (
     totalPages !== 0 && (
       <>
-        <Paper className={classes.paginate} elevation={4}>
+        <Paper className={classes.paginate} elevation={2}>
           <Pagination
             classes={{ ul: classes.ul }}
-            variant="outlined"
-            shape="rounded"
             count={totalPages}
+            size="small"
             page={Number(page) || 1}
+            hidePrevButton
+            hideNextButton
             renderItem={(item) => (
               <PaginationItem
                 {...item}
@@ -51,6 +54,9 @@ const Paginate = ({ page }) => {
             )}
           />
         </Paper>
+        {getPostsLoading && (
+          <CircularProgress size={25} className={classes.circular} />
+        )}
       </>
     )
   );

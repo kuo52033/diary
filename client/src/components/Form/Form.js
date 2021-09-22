@@ -279,7 +279,7 @@ const Form = () => {
               placeItems: "center",
             }}
           >
-            <CircularProgress />
+            <CircularProgress style={{ color: "gray" }} />
           </div>
         )}
 

@@ -209,7 +209,12 @@ const Auth = ({ SignUp = false }) => {
             {loading && (
               <CircularProgress
                 size={24}
-                style={{ position: "absolute", left: "20%", top: "38%" }}
+                style={{
+                  position: "absolute",
+                  left: "20%",
+                  top: "38%",
+                  color: "gray",
+                }}
               />
             )}
           </Box>

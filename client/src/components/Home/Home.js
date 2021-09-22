@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -23,6 +23,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
+  const postsTop = useRef(null);
   const { myData: user } = useSelector((state) => state.auth);
   const [searchTerm, setSearchTerm] = useState("");
   const [openSearch, setOpenSearch] = useState(false);
@@ -127,7 +128,7 @@ const Home = () => {
             </Button>
           )}
         </Box>
-
+        <span ref={postsTop} />
         <Container maxWidth="lg">
           <Box sx={{ mt: 3, minHeight: "80vh" }}>
             <Posts urlTerm={urlTerm} urlTags={urlTags} />
@@ -137,12 +138,15 @@ const Home = () => {
         <Box
           style={{
             display: "flex",
+            position: "relative",
             justifyContent: "center",
             alignItems: "center",
             width: "100%",
           }}
         >
-          {!urlTerm && !urlTags && <Pagination page={page} />}
+          {!urlTerm && !urlTags && (
+            <Pagination page={page} postsTop={postsTop} />
+          )}
         </Box>
       </Container>
     </Grow>

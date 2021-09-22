@@ -6,7 +6,13 @@ export default makeStyles((theme) => ({
   },
   paginate: {
     padding: theme.spacing(1),
+    borderRadius: "18px",
     margin: "2rem",
-    width: "350px",
+    width: "360px",
+  },
+  circular: {
+    color: "gray",
+    position: "absolute",
+    right: 0,
   },
 }));
