@@ -18,6 +18,7 @@ export default async (req, res, next) => {
           res.cookie("accessToken", newAccessToken, {
             httpOnly: true,
             secure: true,
+            sameSite: "None",
             maxAge: 31557600000,
           });
         } catch (error) {
