@@ -7,6 +7,6 @@ export default makeStyles((theme) => ({
   paginate: {
     padding: theme.spacing(1),
     margin: "2rem",
-    width: "40%",
+    width: "350px",
   },
 }));

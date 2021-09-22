@@ -18,11 +18,7 @@ const Posts = ({ urlTerm, urlTags }) => {
       {Array.from({ length: 12 }).map((ske, idx) => (
         <Grid item key={idx} xs={12} sm={6} md={4} lg={3}>
           <Card raised elevation={6} className={classes.skeletonCard}>
-            <Skeleton
-              variant="rect"
-              animation="wave"
-              className={classes.skeletonPhoto}
-            />
+            <Skeleton variant="rect" animation="wave" height={220} />
             <Skeleton
               variant="text"
               width={55}

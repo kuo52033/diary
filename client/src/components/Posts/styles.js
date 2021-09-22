@@ -18,17 +18,6 @@ export default makeStyles((theme) => ({
       height: "390px",
     },
   },
-  skeletonPhoto: {
-    width: "100%",
-    height: "215px",
-
-    [theme.breakpoints.down("md")]: {
-      height: "270px",
-    },
-    [theme.breakpoints.down("xs")]: {
-      height: "222px",
-    },
-  },
   skeletonText: {
     marginTop: "42px",
     marginLeft: "42px",

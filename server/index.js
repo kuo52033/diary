@@ -20,7 +20,7 @@ dotenv.config();
 app.use(
   "/static",
   express.static("public", {
-    maxAge: "5000000",
+    maxAge: "50000000",
   })
 );
 app.use(express.json({ limit: "30mb", extended: true }));

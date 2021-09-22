@@ -28,8 +28,7 @@ export default makeStyles((theme) => ({
     alignItems: "flex-start",
   },
   card: {
-    borderRadius: "15px",
-    // backgroundColor: "#f2ebe9",
+    borderRadius: "10px",
     position: "relative",
     [theme.breakpoints.down("xs")]: {
       marginLeft: "25px",

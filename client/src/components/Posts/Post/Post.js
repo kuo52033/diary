@@ -111,7 +111,7 @@ const Post = ({ post }) => {
   }, []);
 
   return (
-    <Card className={classes.card} raised elevation={6}>
+    <Card className={classes.card} raised elevation={4}>
       <div
         className={classes.cardActionArea}
         onMouseLeave={() => setOpenMenu(false)}
