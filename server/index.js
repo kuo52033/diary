@@ -8,7 +8,10 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 const CORS_OPTIONS = {
-  origin: ["http://localhost:3000", "https://kuo52033.github.io"],
+  origin: [
+    "http://localhost:3000",
+    "https://determined-yalow-f69948.netlify.app",
+  ],
   credentials: true,
 };
 
