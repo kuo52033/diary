@@ -62,10 +62,12 @@ export const userSignin = async (req, res) => {
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
+      sameSite: "None",
       maxAge: 31557600000,
     });
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
+      sameSite: "None",
       maxAge: 31557600000,
     });
 
@@ -113,10 +115,12 @@ export const userSignup = async (req, res) => {
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
+      sameSite: "None",
       maxAge: 31557600000,
     });
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
+      sameSite: "None",
       maxAge: 31557600000,
     });
 
