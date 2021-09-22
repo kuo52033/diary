@@ -17,6 +17,7 @@ export default async (req, res, next) => {
           req.userId = id;
           res.cookie("accessToken", newAccessToken, {
             httpOnly: true,
+            secure: true,
             sameSite: "None",
             maxAge: 31557600000,
           });
