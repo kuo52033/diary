@@ -137,9 +137,10 @@ export const userSignup = async (req, res) => {
 };
 
 export const logout = async (req, res) => {
-  const { refreshToken } = req.cookies;
+  const { refreshToken = null } = req.cookies;
   const { myId } = req.params;
   try {
+    if (!refreshToken) return res.status(200).json({ message: "已登出" });
     await User.findByIdAndUpdate(myId, {
       $pull: { refreshToken: refreshToken },
     });

@@ -6,7 +6,7 @@ export default async (req, res, next) => {
 
   const { accessToken, refreshToken } = req.cookies;
   if (!accessToken || !refreshToken)
-    return res.status(404).json({ message: "使用者驗證錯誤" });
+    return res.status(404).json({ message: "請重新登入" });
   jwt.verify(
     accessToken,
     process.env.ACCESS_TOKEN_SECRET,
