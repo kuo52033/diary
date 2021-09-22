@@ -143,8 +143,14 @@ export const logout = async (req, res) => {
     await User.findByIdAndUpdate(myId, {
       $pull: { refreshToken: refreshToken },
     });
-    res.clearCookie("refreshToken", { path: "/" });
-    res.clearCookie("accessToken", { path: "/" });
+    res.clearCookie("refreshToken", {
+      secure: true,
+      sameSite: "None",
+    });
+    res.clearCookie("accessToken", {
+      secure: true,
+      sameSite: "None",
+    });
     res.status(200).json({ message: "已登出" });
   } catch (error) {
     res.status(500).json({ message: error.message });
