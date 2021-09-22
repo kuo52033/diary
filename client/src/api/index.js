@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:5000";
+const baseURL = "https://diary.herokuapp.com";
 const API = axios.create({ baseURL: baseURL });
 
 // const cancelToken = axios.CancelToken;
