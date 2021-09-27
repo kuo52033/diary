@@ -8,6 +8,9 @@ export default makeStyles((theme) => ({
     flexDirection: "column",
     position: "relative",
     backgroundColor: "#f7f1f0",
+    "&.MuiPaper-rounded": {
+      borderRadius: 0,
+    },
   },
   containerTop: {
     display: "flex",
@@ -30,6 +33,7 @@ export default makeStyles((theme) => ({
     alignSelf: "flex-start",
     [theme.breakpoints.down("xs")]: {
       alignSelf: "center",
+      marginRight: 0,
     },
   },
   userAvatar: {
@@ -47,12 +51,12 @@ export default makeStyles((theme) => ({
     flexDirection: "column",
     [theme.breakpoints.down("xs")]: {
       flexBasis: "0px",
-      width: "60%",
+      alignItems: "center",
     },
   },
   profileSection: {
     margin: "16px 0px",
-    flexBasis: "100px",
+    flexBasis: "70px",
     [theme.breakpoints.down("xs")]: {
       margin: "30px 0px",
       flexBasis: "0px",

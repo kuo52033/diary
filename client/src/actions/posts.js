@@ -121,13 +121,12 @@ export const createPost = (formData, history) => {
   };
 };
 
-export const updatePost = (id, formData, history) => {
+export const updatePost = (id, formData) => {
   return async (dispatch) => {
     try {
       const { data } = await api.updatePost(id, formData);
       dispatch({ type: UPDATE, payload: data.newPost });
       dispatch({ type: UPDATE_POST_AUTH, payload: data.newPost });
-      if (history) history.replace();
       dispatch({ type: SET_FEEDBACK, payload: data.message });
     } catch (error) {
       if (error.message === "Network Error") {

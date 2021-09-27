@@ -12,7 +12,6 @@ import useStyle from "./styles";
 import {
   Box,
   Button,
-  CircularProgress,
   Dialog,
   Divider,
   Slide,
@@ -40,6 +39,7 @@ import EditProfile from "./UserProfileInner/About/EditProfile";
 import { baseURL } from "../../api";
 import { OPEN_SIDEBAR, CLEAN_USER_DATA } from "../../constants/actionTypes";
 import ProfileDetailList from "./ProfileDetailList";
+import Skeleton from "@material-ui/lab/Skeleton";
 
 const UserProfile = () => {
   const [openEdit, setOpenEdit] = useState(false);
@@ -144,7 +144,12 @@ const UserProfile = () => {
             {userProfile && userPostLength !== null ? (
               <>
                 <Box className={classes.allProfileBox}>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
                     <Typography variant="h4" style={{ fontWeight: "bold" }}>
                       {userProfile?.name}
                     </Typography>
@@ -215,10 +220,8 @@ const UserProfile = () => {
                 )}
               </>
             ) : (
-              <Box style={{ alignSelf: "center" }}>
-                <CircularProgress
-                  style={{ color: "gray", width: "20px", height: "20px" }}
-                />
+              <Box className={classes.allProfileBox}>
+                <Skeleton variant="text" width={200} height={40} />
               </Box>
             )}
           </Box>

@@ -116,8 +116,8 @@ export const updateUserAvatar = (formData) => async (dispatch) => {
 
 export const updateUserProfile = (updateData, type) => async (dispatch) => {
   try {
-    const { data } = await api.updateUserProfile(updateData, type);
     dispatch({ type: UPDATE_USER_PROFILE, payload: { updateData, type } });
+    const { data } = await api.updateUserProfile(updateData, type);
     dispatch({ type: SET_FEEDBACK, payload: data.message });
   } catch (error) {
     if (error.message === "Network Error") {

@@ -61,7 +61,7 @@ const Form = () => {
 
     setSubmitLoading(true);
     if (post) {
-      await dispatch(updatePost(post._id, formData, history));
+      await dispatch(updatePost(post._id, formData));
     } else {
       await dispatch(createPost(formData, history));
     }
