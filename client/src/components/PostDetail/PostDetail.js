@@ -396,7 +396,9 @@ const PostDetail = ({ id, setcheckFullwidth, setOpenDialog }) => {
                       </div>
                     )
                   : null}
-                {deleteCommentLoading && <span className={classes.deleteBox} />}
+                {deleteCommentLoading && deleteId === comment._id && (
+                  <span className={classes.deleteBox} />
+                )}
               </div>
             ))}
           </div>

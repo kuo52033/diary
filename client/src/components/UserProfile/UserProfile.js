@@ -81,8 +81,7 @@ const UserProfile = () => {
     if (
       !image?.type.match(/image.jpg/) &&
       !image?.type.match(/image.jpeg/) &&
-      !image?.type.match(/image.png/) &&
-      !image
+      !image?.type.match(/image.png/)
     ) {
       return;
     }

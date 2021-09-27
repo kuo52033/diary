@@ -112,7 +112,7 @@ const Auth = ({ SignUp = false }) => {
           await dispatch(signin(value, history));
         }
       }
-      if (!unmount) setLoading(false);
+      if (!unmount.current) setLoading(false);
     },
   });
 
