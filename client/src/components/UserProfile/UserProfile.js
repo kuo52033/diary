@@ -12,6 +12,7 @@ import useStyle from "./styles";
 import {
   Box,
   Button,
+  CircularProgress,
   Dialog,
   Divider,
   Slide,
@@ -44,10 +45,12 @@ import Skeleton from "@material-ui/lab/Skeleton";
 const UserProfile = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [viewMore, setViewMore] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
   const classes = useStyle();
   const dispatch = useDispatch();
   const { userId } = useParams();
   const avatarRef = useRef();
+  const unmount = useRef();
   const {
     myData: user,
     userProfile,
@@ -61,20 +64,28 @@ const UserProfile = () => {
     dispatch(getUserPostLength(userId));
 
     return () => {
+      unmount.current = true;
       dispatch({ type: CLEAN_USER_DATA });
     };
   }, [dispatch, userId]);
 
   const handleImage = async (e) => {
     const image = e.currentTarget.files[0];
-    // if (!image.type.match(/image.*/)) {
-    //   dispatch({ type: ERROR, payload: "檔案不符合" });
-    //   return;
-    // }
     const formData = new FormData();
     formData.append("avatar", image);
+    setImageLoading(true);
     await dispatch(updateUserAvatar(formData));
+    if (unmount.current) return;
+    setImageLoading(false);
 
+    if (
+      !image?.type.match(/image.jpg/) &&
+      !image?.type.match(/image.jpeg/) &&
+      !image?.type.match(/image.png/) &&
+      !image
+    ) {
+      return;
+    }
     const reader = new FileReader();
     reader.readAsDataURL(image);
     reader.onload = () => {
@@ -92,7 +103,7 @@ const UserProfile = () => {
   };
 
   return (
-    <Slide in>
+    <Slide in unmountOnExit mountOnEnter direction="left">
       <Box
         sx={{
           flexGrow: 1,
@@ -123,6 +134,13 @@ const UserProfile = () => {
                     : `${baseURL}/static/avatar/default_avatar.jpg`
                 }
               />
+              {imageLoading && (
+                <span className={classes.imageLoading}>
+                  <CircularProgress
+                    style={{ color: "gray", width: "25px", height: "25px" }}
+                  />
+                </span>
+              )}
               {userId === user?._id && (
                 <>
                   <input
@@ -133,7 +151,9 @@ const UserProfile = () => {
                     onChange={handleImage}
                   />
                   <label
-                    className={classes.imageInputLabel}
+                    className={`${classes.imageInputLabel} ${
+                      imageLoading && "disable"
+                    }`}
                     htmlFor="avatarUpload"
                   >
                     <CameraAltIcon />
@@ -232,7 +252,11 @@ const UserProfile = () => {
             maxWidth="sm"
             fullWidth
           >
-            <EditProfile handleImage={handleImage} setOpenEdit={setOpenEdit} />
+            <EditProfile
+              handleImage={handleImage}
+              setOpenEdit={setOpenEdit}
+              imageLoading={imageLoading}
+            />
           </Dialog>
 
           <Divider style={{ width: "100%", marginTop: "15px" }} />

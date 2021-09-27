@@ -43,6 +43,17 @@ export default makeStyles((theme) => ({
     objectFit: "cover",
     border: "1px solid white",
   },
+  imageLoading: {
+    display: "flex",
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
+    top: 0,
+    height: "200px",
+    width: "200px",
+    borderRadius: "50%",
+    backgroundColor: "rgba(255,255,255,0.6)",
+  },
   allProfileBox: {
     flexBasis: "350px",
     display: "flex",
@@ -115,10 +126,14 @@ export default makeStyles((theme) => ({
     border: "1px solid black",
     right: "12px",
     bottom: "10px",
-    backgroundColor: "lightgray",
+    backgroundColor: theme.color.button,
     cursor: "pointer",
     "&:hover": {
-      backgroundColor: "eeeee",
+      backgroundColor: theme.color.buttonHover,
+    },
+    "&.disable": {
+      pointerEvents: "none",
+      opacity: 0.8,
     },
   },
   moreDetailsBox: {

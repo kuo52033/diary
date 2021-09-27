@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import imageCompression from "browser-image-compression";
 
 import useStyle from "./styles";
 import {
@@ -19,7 +20,6 @@ import PhotoIcon from "@material-ui/icons/Photo";
 import CancelIcon from "@material-ui/icons/Cancel";
 
 import { createPost, updatePost } from "../../actions/posts";
-import imageCompression from "browser-image-compression";
 import { baseURL } from "../../api";
 import Tag from "./Tag/Tag";
 import {
@@ -117,7 +117,11 @@ const Form = () => {
       useWebWorker: true,
     };
     const filterArray = imagesArray.filter((image) => {
-      return image.type.match(/image.*/);
+      return (
+        image.type.match(/image.png/) ||
+        image.type.match(/image.jpg/) ||
+        image.type.match(/image.jpeg/)
+      );
     });
 
     setImageLoading(true);

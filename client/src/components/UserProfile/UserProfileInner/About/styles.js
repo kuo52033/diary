@@ -32,6 +32,17 @@ export default makeStyles((theme) => ({
     width: "150px",
     border: "1px solid white",
   },
+  imageLoading: {
+    display: "flex",
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
+    top: 0,
+    height: "150px",
+    width: "150px",
+    borderRadius: "50%",
+    backgroundColor: "rgba(255,255,255,0.6)",
+  },
   boxTop: {
     display: "flex",
     justifyContent: "space-between",
@@ -53,15 +64,19 @@ export default makeStyles((theme) => ({
     transition: theme.transitions.create("background-color", {
       duration: theme.transitions.duration.standard,
     }),
-  },
-  divider: {
-    margin: "18px 0px",
+    "&.disable": {
+      pointerEvents: "none",
+      opacity: 0.8,
+    },
   },
   editButton: {
     backgroundColor: theme.color.button,
     "&:hover": {
       backgroundColor: theme.color.buttonHover,
     },
+  },
+  divider: {
+    margin: "18px 0px",
   },
   nameBox: {
     padding: "5px",

@@ -3,7 +3,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import useStyle from "./styles";
-import { Button, Box, Container, Grow, InputBase } from "@material-ui/core";
+import { Button, Box, Container, InputBase, Slide } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AddIcon from "@material-ui/icons/Add";
@@ -64,7 +64,7 @@ const Home = () => {
   };
 
   return (
-    <Grow in>
+    <Slide in unmountOnExit mountOnEnter direction="left">
       <Container
         maxWidth="xl"
         style={{
@@ -149,7 +149,7 @@ const Home = () => {
           )}
         </Box>
       </Container>
-    </Grow>
+    </Slide>
   );
 };
 

@@ -10,8 +10,8 @@ import {
   Button,
   CircularProgress,
   Grid,
-  Grow,
   Paper,
+  Slide,
   Typography,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -126,7 +126,7 @@ const Auth = ({ SignUp = false }) => {
     return <Redirect to="/posts" />;
 
   return (
-    <Grow in>
+    <Slide in unmountOnExit mountOnEnter direction="left">
       <div className={classes.background}>
         <Button
           className={classes.sidebarMenu}
@@ -242,7 +242,7 @@ const Auth = ({ SignUp = false }) => {
           )}
         </Paper>
       </div>
-    </Grow>
+    </Slide>
   );
 };
 

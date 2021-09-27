@@ -7,6 +7,7 @@ import {
   Avatar,
   Box,
   Button,
+  CircularProgress,
   Divider,
   Dialog,
   Typography,
@@ -19,7 +20,11 @@ import { baseURL } from "../../../../api";
 import DetailsProfile from "./DetailsProfile";
 import ProfileDetailList from "../../ProfileDetailList";
 
-const EditProfile = ({ handleImage, setOpenEdit: setOuterEdit }) => {
+const EditProfile = ({
+  handleImage,
+  setOpenEdit: setOuterEdit,
+  imageLoading,
+}) => {
   const classes = useStyle();
   const { myData: user, userProfile } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -66,7 +71,9 @@ const EditProfile = ({ handleImage, setOpenEdit: setOuterEdit }) => {
 
           <label
             htmlFor="imageUpload2"
-            className={`${classes.editLabel} ${classes.editButton}`}
+            className={`${classes.editLabel} ${classes.editButton} ${
+              imageLoading && "disable"
+            }`}
           >
             編輯
           </label>
@@ -84,6 +91,7 @@ const EditProfile = ({ handleImage, setOpenEdit: setOuterEdit }) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            position: "relative",
           }}
         >
           <Avatar
@@ -94,6 +102,13 @@ const EditProfile = ({ handleImage, setOpenEdit: setOuterEdit }) => {
             }
             className={classes.avatar}
           />
+          {imageLoading && (
+            <span className={classes.imageLoading}>
+              <CircularProgress
+                style={{ color: "gray", width: "25px", height: "25px" }}
+              />
+            </span>
+          )}
         </div>
       </Box>
 
