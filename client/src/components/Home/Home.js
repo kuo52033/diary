@@ -75,6 +75,7 @@ const Home = () => {
           flexDirection: "column",
         }}
       >
+        <span ref={postsTop} />
         <Box className={classes.navbar}>
           <Button
             className={classes.sidebarMenu}
@@ -128,7 +129,6 @@ const Home = () => {
             </Button>
           )}
         </Box>
-        <span ref={postsTop} />
         <Container maxWidth="lg">
           <Box sx={{ mt: 3, minHeight: "80vh" }}>
             <Posts urlTerm={urlTerm} urlTags={urlTags} />

@@ -6,12 +6,13 @@ import * as Yup from "yup";
 
 import useStyle from "./styles";
 import {
-  Paper,
-  Grid,
-  Typography,
-  Button,
   Box,
+  Button,
   CircularProgress,
+  Grid,
+  Grow,
+  Paper,
+  Typography,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 
@@ -125,117 +126,123 @@ const Auth = ({ SignUp = false }) => {
     return <Redirect to="/posts" />;
 
   return (
-    <div className={classes.background}>
-      <Button
-        className={classes.sidebarMenu}
-        onClick={() => dispatch({ type: OPEN_SIDEBAR })}
-      >
-        <MenuIcon fontSize="large" />
-      </Button>
-      <Paper className={classes.paper} elevation={5}>
-        <Typography variant="h5" className={classes.title}>
-          {isChangePassword ? "更改密碼" : isSignup ? "註冊" : "登入"}
-        </Typography>
-        <form className={classes.form} onSubmit={formik.handleSubmit}>
-          <Grid container spacing={3}>
-            {isSignup && (
-              <Input name="name" label="姓名" type="text" formik={formik} />
-            )}
-            {!isChangePassword && (
-              <>
+    <Grow in>
+      <div className={classes.background}>
+        <Button
+          className={classes.sidebarMenu}
+          onClick={() => dispatch({ type: OPEN_SIDEBAR })}
+        >
+          <MenuIcon fontSize="large" />
+        </Button>
+        <Paper className={classes.paper} elevation={5}>
+          <Typography variant="h5" className={classes.title}>
+            {isChangePassword ? "更改密碼" : isSignup ? "註冊" : "登入"}
+          </Typography>
+          <form className={classes.form} onSubmit={formik.handleSubmit}>
+            <Grid container spacing={3}>
+              {isSignup && (
+                <Input name="name" label="姓名" type="text" formik={formik} />
+              )}
+              {!isChangePassword && (
+                <>
+                  <Input
+                    name="email"
+                    label="電子郵件"
+                    type="email"
+                    formik={formik}
+                  />
+                  <Input
+                    name="password"
+                    label="密碼"
+                    type={showPassword.password ? "text" : "password"}
+                    handleShowPassword={() => handleShowPassword("password")}
+                    formik={formik}
+                  />
+                </>
+              )}
+              {isSignup && (
                 <Input
-                  name="email"
-                  label="電子郵件"
-                  type="email"
-                  formik={formik}
-                />
-                <Input
-                  name="password"
-                  label="密碼"
-                  type={showPassword.password ? "text" : "password"}
-                  handleShowPassword={() => handleShowPassword("password")}
-                  formik={formik}
-                />
-              </>
-            )}
-            {isSignup && (
-              <Input
-                name="confirmpassword"
-                label="確認密碼"
-                type={showPassword.confirmpassword ? "text" : "password"}
-                handleShowPassword={() => handleShowPassword("confirmpassword")}
-                formik={formik}
-              />
-            )}
-            {isChangePassword && (
-              <>
-                <Input
-                  name="oldPassword"
-                  label="舊密碼"
-                  type={showPassword.oldPassword ? "text" : "password"}
-                  handleShowPassword={() => handleShowPassword("oldPassword")}
-                  formik={formik}
-                />
-                <Input
-                  name="newPassword"
-                  label="新密碼"
-                  type={showPassword.newPassword ? "text" : "password"}
-                  handleShowPassword={() => handleShowPassword("newPassword")}
-                  formik={formik}
-                />
-                <Input
-                  name="confirmNewPassword"
-                  label="確定新密碼"
-                  type={showPassword.confirmNewPassword ? "text" : "password"}
+                  name="confirmpassword"
+                  label="確認密碼"
+                  type={showPassword.confirmpassword ? "text" : "password"}
                   handleShowPassword={() =>
-                    handleShowPassword("confirmNewPassword")
+                    handleShowPassword("confirmpassword")
                   }
                   formik={formik}
                 />
-              </>
-            )}
-          </Grid>
-          <Box sx={{ position: "relative" }}>
-            <Button
-              className={classes.submit}
-              type="submit"
-              variant="contained"
-              color="primary"
-              disabled={loading ? true : false}
-              fullWidth
-            >
-              {isChangePassword ? "確認" : isSignup ? "註冊" : "登入"}
-            </Button>
-            {loading && (
-              <CircularProgress
-                size={24}
-                style={{
-                  position: "absolute",
-                  left: "20%",
-                  top: "38%",
-                  color: "gray",
-                }}
-              />
-            )}
-          </Box>
-        </form>
-        {!isChangePassword && (
-          <>
-            <div style={{ width: "100%", borderTop: "1px solid black" }}></div>
-            <Button
-              className={classes.Button}
-              onClick={switchMode}
-              fullWidth
-              variant="outlined"
-              color="primary"
-              disabled={loading ? true : false}
-            >
-              {isSignup ? "使用現有帳號登入" : "註冊新帳號"}
-            </Button>
-          </>
-        )}
-      </Paper>
-    </div>
+              )}
+              {isChangePassword && (
+                <>
+                  <Input
+                    name="oldPassword"
+                    label="舊密碼"
+                    type={showPassword.oldPassword ? "text" : "password"}
+                    handleShowPassword={() => handleShowPassword("oldPassword")}
+                    formik={formik}
+                  />
+                  <Input
+                    name="newPassword"
+                    label="新密碼"
+                    type={showPassword.newPassword ? "text" : "password"}
+                    handleShowPassword={() => handleShowPassword("newPassword")}
+                    formik={formik}
+                  />
+                  <Input
+                    name="confirmNewPassword"
+                    label="確定新密碼"
+                    type={showPassword.confirmNewPassword ? "text" : "password"}
+                    handleShowPassword={() =>
+                      handleShowPassword("confirmNewPassword")
+                    }
+                    formik={formik}
+                  />
+                </>
+              )}
+            </Grid>
+            <Box sx={{ position: "relative" }}>
+              <Button
+                className={classes.submit}
+                type="submit"
+                variant="contained"
+                color="primary"
+                disabled={loading ? true : false}
+                fullWidth
+              >
+                {isChangePassword ? "確認" : isSignup ? "註冊" : "登入"}
+              </Button>
+              {loading && (
+                <CircularProgress
+                  size={24}
+                  style={{
+                    position: "absolute",
+                    left: "20%",
+                    top: "38%",
+                    color: "gray",
+                  }}
+                />
+              )}
+            </Box>
+          </form>
+          {!isChangePassword && (
+            <>
+              <div
+                style={{ width: "100%", borderTop: "1px solid black" }}
+              ></div>
+              <Button
+                className={classes.Button}
+                onClick={switchMode}
+                fullWidth
+                variant="outlined"
+                color="primary"
+                disabled={loading ? true : false}
+              >
+                {isSignup ? "使用現有帳號登入" : "註冊新帳號"}
+              </Button>
+            </>
+          )}
+        </Paper>
+      </div>
+    </Grow>
   );
 };
 

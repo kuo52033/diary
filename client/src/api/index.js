@@ -3,9 +3,6 @@ import axios from "axios";
 const baseURL = "https://diary.herokuapp.com";
 const API = axios.create({ baseURL: baseURL });
 
-// const cancelToken = axios.CancelToken;
-// let cancel;
-
 API.interceptors.request.use((req) => {
   // if (localStorage.getItem("user")) {
   //   req.headers.authorization = `Bearer ${
