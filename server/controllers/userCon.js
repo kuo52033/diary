@@ -1,29 +1,8 @@
-import mongoose from "mongoose";
 import User from "../modules/user.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import sharp from "sharp";
-import fs from "fs";
-import { v4 as uuidv4 } from "uuid";
 import postMessage from "../modules/postMessage.js";
-
-const avatarCompress = async (file) => {
-  const filename = `${uuidv4()}-${file.originalname
-    .toLowerCase()
-    .split(" ")
-    .join("-")}`;
-  await sharp(file.buffer)
-    .resize({
-      width: 200,
-      height: 200,
-      fit: sharp.fit.cover,
-      positoin: "center",
-    })
-    .jpeg({ quality: 70 })
-    .toFile(`./public/avatar/${filename}`);
-
-  return filename;
-};
+import cloudinary from "cloudinary";
 
 export const userSignin = async (req, res) => {
   const { email, password } = req.body;
@@ -33,7 +12,8 @@ export const userSignin = async (req, res) => {
       "name avatar email password"
     );
 
-    if (!existingUser) return res.status(404).json({ message: "使用者不存在" });
+    if (!existingUser)
+      return res.status(404).json({ message: "帳號或密碼輸入錯誤" });
 
     const isPasswordCorrect = await bcrypt.compare(
       password,
@@ -41,12 +21,12 @@ export const userSignin = async (req, res) => {
     );
 
     if (!isPasswordCorrect)
-      return res.status(400).json({ message: "密碼輸入錯誤" });
+      return res.status(404).json({ message: "帳號或密碼輸入錯誤" });
 
     const accessToken = jwt.sign(
       { id: existingUser._id },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "30m" }
+      { expiresIn: "80m" }
     );
 
     const refreshToken = jwt.sign(
@@ -58,7 +38,7 @@ export const userSignin = async (req, res) => {
       $push: { refreshToken: refreshToken },
     });
 
-    const { _id, name, avatar } = existingUser;
+    const { _id, name } = existingUser;
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
@@ -73,9 +53,10 @@ export const userSignin = async (req, res) => {
       maxAge: 31557600000,
     });
 
-    res
-      .status(200)
-      .json({ result: { _id, name, avatar }, message: "登入成功" });
+    res.status(200).json({
+      result: { _id, name, avatar: existingUser.thumbnail },
+      message: "登入成功",
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -170,7 +151,7 @@ export const changePassword = async (req, res) => {
     const passwordCheck = await bcrypt.compare(oldPassword, user.password);
 
     if (!passwordCheck)
-      return res.status(400).json({ message: "舊密碼輸入錯誤" });
+      return res.status(400).json({ message: "密碼輸入錯誤" });
 
     const hashPassword = await bcrypt.hash(newPassword, 12);
 
@@ -190,7 +171,10 @@ export const getUserProfile = async (req, res) => {
       .select("-refreshToken -password")
       .lean();
 
-    res.status(200).json(userData);
+    res.status(200).json({
+      ...userData,
+      avatar: userData.avatar.url.replace("/upload", "/upload/w_200"),
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -200,9 +184,7 @@ export const getUserPostLength = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const postLength = await postMessage
-      .countDocuments({ creator: userId })
-      .lean();
+    const postLength = await postMessage.countDocuments({ creator: userId });
 
     res.status(200).json(postLength);
   } catch (error) {
@@ -217,16 +199,18 @@ export const updateUserAvatar = async (req, res) => {
     if (req.mimetypeError)
       return res.status(415).send({ message: req.mimetypeError });
 
-    const avatarFilename = await avatarCompress(req.file);
-    const userAvatar = await User.findByIdAndUpdate(userId, {
-      avatar: avatarFilename,
-    })
-      .select("-_id avatar")
-      .lean();
-    if (userAvatar.avatar)
-      await fs.unlinkSync(`./public/avatar/${userAvatar.avatar}`);
+    const userAvatar = await User.findById(userId);
 
-    res.status(200).json({ avatarFilename, message: "更新成功" });
+    if (userAvatar.avatar.filename)
+      await cloudinary.v2.uploader.destroy(userAvatar.avatar.filename);
+
+    userAvatar.avatar = { url: req.file.path, filename: req.file.filename };
+    await userAvatar.save();
+
+    res.status(200).json({
+      avatarurl: userAvatar.thumbnail,
+      message: "更新成功",
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

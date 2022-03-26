@@ -15,7 +15,6 @@ import ModeCommentIcon from "@material-ui/icons/ModeComment";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 
 import PostDetail from "../../../PostDetail/PostDetail";
-import { baseURL } from "../../../../api";
 import { getPostsbyUser, getUserFavorites } from "../../../../actions/posts";
 
 const MyPosts = () => {
@@ -83,7 +82,7 @@ const MyPosts = () => {
                   alt=""
                   src={
                     post.selectfileFirst
-                      ? `${baseURL}/static/postImage/${post.selectfileFirst}`
+                      ? post.selectfileFirst.url
                       : "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
                   }
                   className={classes.img}

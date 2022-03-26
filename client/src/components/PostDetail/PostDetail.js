@@ -45,7 +45,6 @@ import {
 } from "../../actions/posts";
 import { favoritePost, unFavoritePost } from "../../actions/auth";
 import ImageSilde from "./ImageSilde";
-import { baseURL } from "../../api";
 import {
   CLEAN_POST,
   UPDATE_USERACTIVE,
@@ -272,8 +271,8 @@ const PostDetail = ({ id, setcheckFullwidth, setOpenDialog }) => {
               onClick={() => goUserProfile()}
               src={
                 post?.creator?.avatar
-                  ? `${baseURL}/static/avatar/${post.creator.avatar}`
-                  : `${baseURL}/static/avatar/default_avatar.jpg`
+                  ? post.creator.avatar.url
+                  : "https://res.cloudinary.com/dhawohjee/image/upload/v1648186493/diary/default_avatar_ip9dhd.png"
               }
               className={classes.avatar}
             />
@@ -364,8 +363,8 @@ const PostDetail = ({ id, setcheckFullwidth, setOpenDialog }) => {
                     onClick={() => goUserProfile(comment.user._id)}
                     src={
                       comment.user.avatar
-                        ? `${baseURL}/static/avatar/${comment.user.avatar}`
-                        : `${baseURL}/static/avatar/default_avatar.jpg`
+                        ? comment.user.avatar.url
+                        : "https://res.cloudinary.com/dhawohjee/image/upload/v1648186493/diary/default_avatar_ip9dhd.png"
                     }
                     className={classes.avatar}
                   />

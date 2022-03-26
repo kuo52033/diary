@@ -32,7 +32,6 @@ import BookmarkIcon from "@material-ui/icons/Bookmark";
 
 import { deletePost, likePost, unLikePost } from "../../../actions/posts";
 import { favoritePost, unFavoritePost } from "../../../actions/auth";
-import { baseURL } from "../../../api";
 import { OPEN_EDIT_POST } from "../../../constants/actionTypes";
 
 const Post = ({ post }) => {
@@ -120,8 +119,8 @@ const Post = ({ post }) => {
           className={classes.media}
           image={
             post.selectfile[0]
-              ? `${baseURL}/static/postImage/${post.selectfile[0]}`
-              : `${baseURL}/static/postImage/post_no_image.jpg`
+              ? post.selectfile[0].url
+              : "https://res.cloudinary.com/dhawohjee/image/upload/v1648186761/diary/post_no_image_qsrasx.png"
           }
           title={post.title}
         />
@@ -168,8 +167,8 @@ const Post = ({ post }) => {
           className={classes.avatar}
           src={
             post.creator.avatar
-              ? `${baseURL}/static/avatar/${post.creator.avatar}`
-              : `${baseURL}/static/avatar/default_avatar.jpg`
+              ? post.creator.avatar.url
+              : "https://res.cloudinary.com/dhawohjee/image/upload/v1648186493/diary/default_avatar_ip9dhd.png"
           }
         />
       </Tooltip>

@@ -125,8 +125,15 @@ export const updatePost = (id, formData) => {
   return async (dispatch) => {
     try {
       const { data } = await api.updatePost(id, formData);
-      dispatch({ type: UPDATE, payload: data.newPost });
-      dispatch({ type: UPDATE_POST_AUTH, payload: data.newPost });
+
+      dispatch({
+        type: UPDATE,
+        payload: { id, post: formData, imagePath: data.imagePath },
+      });
+      dispatch({
+        type: UPDATE_POST_AUTH,
+        payload: { id, post: formData, imagePath: data.imagePath },
+      });
       dispatch({ type: SET_FEEDBACK, payload: data.message });
     } catch (error) {
       if (error.message === "Network Error") {

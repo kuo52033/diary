@@ -22,7 +22,6 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import AddIcon from "@material-ui/icons/Add";
 
 import { CLOSE_SIDEBAR, OPEN_EDIT_POST } from "../../constants/actionTypes";
-import { baseURL } from "../../api/index";
 import { logout } from "../../actions/auth";
 
 const Navbar = () => {
@@ -65,7 +64,11 @@ const Navbar = () => {
         component={Link}
         to="/posts"
       >
-        <img src={`${baseURL}/static/logo/logo1.png`} alt="" height="80" />
+        <img
+          src="https://res.cloudinary.com/dhawohjee/image/upload/v1648186659/diary/logo1_ggvdpl.png"
+          alt=""
+          height="80"
+        />
       </Box>
 
       {user && (
@@ -76,8 +79,8 @@ const Navbar = () => {
                 className={classes.userAvatar}
                 src={
                   user.avatar
-                    ? `${baseURL}/static/avatar/${user.avatar}`
-                    : `${baseURL}/static/avatar/default_avatar.jpg`
+                    ? user.avatar
+                    : "https://res.cloudinary.com/dhawohjee/image/upload/v1648186493/diary/default_avatar_ip9dhd.png"
                 }
               />
             </Tooltip>
@@ -86,8 +89,8 @@ const Navbar = () => {
               className={classes.userAvatar}
               src={
                 user.avatar
-                  ? `${baseURL}/static/avatar/${user.avatar}`
-                  : `${baseURL}/static/avatar/default_avatar.jpg`
+                  ? user.avatar
+                  : "https://res.cloudinary.com/dhawohjee/image/upload/v1648186493/diary/default_avatar_ip9dhd.png"
               }
             />
           )}

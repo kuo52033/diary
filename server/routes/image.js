@@ -1,19 +1,22 @@
 import multer from "multer";
-import { v4 as uuidv4 } from "uuid";
+import cloudinary from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import dotenv from "dotenv";
 
-// const DIR = "./public";
+dotenv.config();
 
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, DIR);
-//   },
-//   filename: (req, file, cb) => {
-//     const fileName = file.originalname.toLowerCase().split(" ").join("-");
-//     cb(null, uuidv4() + "-" + fileName);
-//   },
-// });
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-const storage = multer.memoryStorage();
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary.v2,
+  params: {
+    folder: "diary",
+  },
+});
 
 const upload = multer({
   storage,

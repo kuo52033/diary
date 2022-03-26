@@ -2,25 +2,7 @@ import postMessage, { Comment } from "../modules/postMessage.js";
 import mongoose from "mongoose";
 import User from "../modules/user.js";
 import * as fs from "fs";
-import sharp from "sharp";
-import { v4 as uuidv4 } from "uuid";
-
-const uploadAndCompress = async (files) => {
-  const imagePath = [];
-  await Promise.all(
-    files.map(async (file) => {
-      const filename = `${uuidv4()}-${file.originalname
-        .toLowerCase()
-        .split(" ")
-        .join("-")}`;
-      imagePath.push(filename);
-      await sharp(file.buffer)
-        .jpeg({ quality: 90 })
-        .toFile(`./public/postImage/${filename}`);
-    })
-  );
-  return imagePath;
-};
+import cloudinary from "cloudinary";
 
 export const getPaginate = async (req, res) => {
   try {
@@ -191,12 +173,12 @@ export const createPost = async (req, res) => {
 
   try {
     if (files.length !== 0) {
-      imagePath = await uploadAndCompress(files);
+      imagePath = files.map((f) => ({ url: f.path, filename: f.filename }));
     }
 
     const newPost = await postMessage.create({
       ...post,
-      selectfile: imagePath.length > 0 ? imagePath : [],
+      selectfile: imagePath,
       creator: req.userId,
       createAt: new Date().toISOString(),
     });
@@ -221,9 +203,14 @@ export const createPost = async (req, res) => {
   }
 };
 
+const deleteImage = async (files) => {
+  for (let f of files) {
+    await cloudinary.v2.uploader.destroy(f.filename);
+  }
+};
+
 export const updatePost = async (req, res) => {
   const { id } = req.params;
-  const { myId = undefined } = req.body;
   const updatePost = req.body;
   const files = req.files;
   let imagePath = [];
@@ -232,52 +219,26 @@ export const updatePost = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(id))
       return res.status(404).send("no id with that post!");
 
-    if (files.length !== 0) {
-      imagePath = await uploadAndCompress(files);
-    }
+    const post = await postMessage.findByIdAndUpdate(id, { ...updatePost });
 
-    if (!updatePost.beforeFile) {
-      const deleteImage = await postMessage
-        .findById(id)
-        .select("selectfile")
-        .lean();
-      if (deleteImage.selectfile.length !== 0) {
-        await Promise.all(
-          deleteImage.selectfile.map(
-            async (file) => await fs.unlinkSync(`./public/postImage/${file}`)
-          )
-        );
+    if (files.length !== 0) {
+      if (post.selectfile.length !== 0) {
+        await deleteImage(post.selectfile);
+      }
+      imagePath = files.map((f) => ({ url: f.path, filename: f.filename }));
+      post.selectfile = imagePath;
+      await post.save();
+    } else {
+      if (updatePost.deleteAll) {
+        await deleteImage(post.selectfile);
+        post.selectfile = [];
+        await post.save();
+      } else {
+        imagePath = post.selectfile;
       }
     }
 
-    const newPost = await postMessage
-      .findByIdAndUpdate(
-        id,
-        {
-          ...updatePost,
-          selectfile:
-            imagePath.length === 0 ? updatePost.beforeFile || [] : imagePath,
-        },
-        { new: true }
-      )
-      .select({
-        title: 1,
-        likesContain: { $in: [myId, "$likes"] },
-        likesLength: { $size: "$likes" },
-        favoriteContain: { $in: [myId, "$favorites"] },
-        tags: 1,
-        message: 1,
-        creator: 1,
-        selectfile: 1,
-        createAt: 1,
-        comments: { $size: "$comments" },
-      })
-      .populate({
-        path: "creator",
-        select: "name avatar",
-      });
-
-    res.json({ newPost, message: "編輯成功" });
+    res.json({ imagePath, message: "編輯成功" });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -292,11 +253,7 @@ export const deletePost = async (req, res) => {
       .lean();
 
     if (deletePost.selectfile.length !== 0) {
-      await Promise.all(
-        deletePost.selectfile.map(
-          async (file) => await fs.unlinkSync(`./public/postImage/${file}`)
-        )
-      );
+      await deleteImage(deletePost.selectfile);
     }
     await Comment.deleteMany({ _id: { $in: deletePost.comments } });
     await postMessage.findByIdAndRemove(id);

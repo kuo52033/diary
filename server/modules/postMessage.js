@@ -1,11 +1,16 @@
 import mongoose from "mongoose";
 
-const postSchema = mongoose.Schema({
+const postImageSchema = new mongoose.Schema({
+  url: String,
+  filename: String,
+});
+
+const postSchema = new mongoose.Schema({
   title: String,
   message: String,
   creator: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   tags: [String],
-  selectfile: [String],
+  selectfile: [postImageSchema],
   likes: [String],
   favorites: [{ type: String, default: [] }],
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],

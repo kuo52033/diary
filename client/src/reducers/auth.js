@@ -138,28 +138,24 @@ const auth = (state = initialState, action) => {
         ...state,
         userPosts: state.userPosts
           ? state.userPosts.map((post) =>
-              post._id === action.payload._id
+              post._id === action.payload.id
                 ? {
                     ...post,
-                    selectfileFirst: action.payload.selectfile
-                      ? action.payload.selectfile[0]
+                    selectfileFirst: action.payload.imagePath
+                      ? action.payload.imagePath[0]
                       : null,
-                    comments: action.payload.comments,
-                    likesLength: action.payload.likesLength,
                   }
                 : post
             )
           : null,
         userFavorites: state.userFavorites
           ? state.userFavorites.map((post) =>
-              post._id === action.payload._id
+              post._id === action.payload.id
                 ? {
                     ...post,
-                    selectfileFirst: action.payload.selectfile
-                      ? action.payload.selectfile[0]
+                    selectfileFirst: action.payload.imagePath
+                      ? action.payload.imagePath[0]
                       : null,
-                    comments: action.payload.comments,
-                    likesLength: action.payload.likesLength,
                   }
                 : post
             )

@@ -26,8 +26,10 @@ router.get("/paginate", getPaginate);
 router.post("/", getPosts);
 router.get("/user/:userid", getPostByUser);
 router.get("/favorites/:userId", getUserFavorites);
-router.patch("/:id", auth, upload.array("file", 10), updatePost);
-router.delete("/:id", auth, deletePost);
+router
+  .route("/:id")
+  .patch(auth, upload.array("file", 10), updatePost)
+  .delete(auth, deletePost);
 router.patch("/:id/like", auth, likePost);
 router.patch("/:id/unlike", auth, unlikePost);
 router.post("/:id/comment", auth, commentPost);

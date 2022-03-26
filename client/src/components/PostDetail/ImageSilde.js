@@ -4,8 +4,6 @@ import useStyle from "./styles";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
-import { baseURL } from "../../api";
-
 const ImageSilde = ({ images }) => {
   const classes = useStyle();
   const slideIndex = useRef(0);
@@ -41,7 +39,7 @@ const ImageSilde = ({ images }) => {
         {images.map((image, idx) => (
           <img
             key={idx}
-            src={`${baseURL}/static/postImage/${image}`}
+            src={image.url}
             alt=""
             style={{
               width: `${100 / images.length}%`,

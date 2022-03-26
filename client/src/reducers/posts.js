@@ -62,13 +62,19 @@ const posts = (state = initialState, action) => {
         post: state.post
           ? {
               ...state.post,
-              ...action.payload,
-              comments: [...state.post.comments],
+              ...action.payload.post,
+              selectfile: [...action.payload.imagePath],
             }
           : null,
         posts: state.posts
           ? state.posts.map((post) =>
-              action.payload._id === post._id ? action.payload : post
+              action.payload.id === post._id
+                ? {
+                    ...post,
+                    ...action.payload.post,
+                    selectfile: [...action.payload.imagePath],
+                  }
+                : post
             )
           : null,
       };

@@ -16,7 +16,6 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 
 import { updateUserProfile } from "../../../../actions/auth";
-import { baseURL } from "../../../../api";
 import DetailsProfile from "./DetailsProfile";
 import ProfileDetailList from "../../ProfileDetailList";
 
@@ -97,8 +96,8 @@ const EditProfile = ({
           <Avatar
             src={
               userProfile?.avatar
-                ? `${baseURL}/static/avatar/${user.avatar}`
-                : `${baseURL}/static/avatar/default_avatar.jpg`
+                ? user.avatar
+                : "https://res.cloudinary.com/dhawohjee/image/upload/v1648186493/diary/default_avatar_ip9dhd.png"
             }
             className={classes.avatar}
           />

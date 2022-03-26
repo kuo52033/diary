@@ -101,7 +101,7 @@ export const updateUserAvatar = (formData) => async (dispatch) => {
   try {
     const { data } = await api.updateUserAvatar(formData);
 
-    dispatch({ type: UPDATE_USER_AVATAR, payload: data.avatarFilename });
+    dispatch({ type: UPDATE_USER_AVATAR, payload: data.avatarurl });
     dispatch({ type: SET_FEEDBACK, payload: data.message });
   } catch (error) {
     if (error.message === "Network Error") {

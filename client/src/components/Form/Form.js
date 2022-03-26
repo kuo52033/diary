@@ -20,7 +20,6 @@ import PhotoIcon from "@material-ui/icons/Photo";
 import CancelIcon from "@material-ui/icons/Cancel";
 
 import { createPost, updatePost } from "../../actions/posts";
-import { baseURL } from "../../api";
 import Tag from "./Tag/Tag";
 import {
   CLEAN_FORMDATA,
@@ -51,12 +50,10 @@ const Form = () => {
     const formData = new FormData();
     if (postData.sendFile)
       postData.sendFile.forEach((image) => formData.append("file", image));
-    postData.selectfile.forEach((image) =>
-      formData.append("beforeFile", image)
-    );
 
     formData.append("title", postData.title);
     formData.append("message", postData.message);
+    formData.append("deleteAll", postData.deleteAll);
     postData.tags.forEach((tag) => formData.append("tags", tag));
 
     setSubmitLoading(true);
@@ -81,6 +78,7 @@ const Form = () => {
       tags: [],
       selectfile: [],
       sendFile: [],
+      deleteAll: false,
     });
   };
 
@@ -144,7 +142,7 @@ const Form = () => {
   };
 
   const handleDeleteImage = () => {
-    setPostData({ ...postData, selectfile: [], sendFile: [] });
+    setPostData({ ...postData, selectfile: [], sendFile: [], deleteAll: true });
   };
 
   const renderSelectfile = () => {
@@ -162,14 +160,7 @@ const Form = () => {
               : 1
           }
         >
-          <img
-            src={
-              file.split(",")[0].match("base64")
-                ? file
-                : `${baseURL}/static/postImage/${file}`
-            }
-            alt=""
-          />
+          <img src={file.url ? file.url : file} alt="" />
         </ImageListItem>
       );
     }

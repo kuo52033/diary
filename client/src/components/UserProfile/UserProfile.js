@@ -37,7 +37,6 @@ import {
 } from "../../actions/auth";
 import MyPosts from "./UserProfileInner/MyPosts/MyPosts";
 import EditProfile from "./UserProfileInner/About/EditProfile";
-import { baseURL } from "../../api";
 import { OPEN_SIDEBAR, CLEAN_USER_DATA } from "../../constants/actionTypes";
 import ProfileDetailList from "./ProfileDetailList";
 import Skeleton from "@material-ui/lab/Skeleton";
@@ -129,8 +128,8 @@ const UserProfile = () => {
                 className={classes.userAvatar}
                 src={
                   userProfile?.avatar
-                    ? `${baseURL}/static/avatar/${userProfile.avatar}`
-                    : `${baseURL}/static/avatar/default_avatar.jpg`
+                    ? userProfile.avatar
+                    : "https://res.cloudinary.com/dhawohjee/image/upload/v1648186493/diary/default_avatar_ip9dhd.png"
                 }
               />
               {imageLoading && (
