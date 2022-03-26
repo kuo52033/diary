@@ -1,7 +1,12 @@
 import axios from "axios";
 
-// const baseURL = "https://diary.herokuapp.com";
-const baseURL = "http://localhost:5000";
+let baseURL;
+
+if (process.env.NODE_ENV === "development") {
+  baseURL = "http://localhost:5000";
+} else {
+  baseURL = "https://diary.herokuapp.com";
+}
 const API = axios.create({ baseURL: baseURL });
 
 API.interceptors.request.use((req) => {
