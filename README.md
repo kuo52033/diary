@@ -29,7 +29,16 @@
 * Router Middleware 處理請求，並抓取資料庫資料回傳。
 * Heroku 服務來佈屬後端伺服器。
 
-## 功能
+## 主要功能
+
+### 上傳
+![upload](https://res.cloudinary.com/dhawohjee/image/upload/v1648470278/diary/Diary_-_Google_Chrome_2022-03-28_20-20-37_AdobeCreativeCloudExpress_wzgvuj.gif)
+
+### 留言
+![message](https://res.cloudinary.com/dhawohjee/image/upload/v1648471399/diary/Diary_-_Google_Chrome_2022-03-28_20-40-46_AdobeCreativeCloudExpress_xdhnvh.gif)
+
+### 修改資料
+![change](https://res.cloudinary.com/dhawohjee/image/upload/v1648471888/diary/Diary_-_Google_Chrome_2022-03-28_20-49-21_AdobeCreativeCloudExpress_bokiwa.gif)
 
 ## 使用
 
