@@ -21,11 +21,7 @@ import CancelIcon from "@material-ui/icons/Cancel";
 
 import { createPost, updatePost } from "../../actions/posts";
 import Tag from "./Tag/Tag";
-import {
-  CLEAN_FORMDATA,
-  SET_FORMDATA,
-  CLOSE_EDIT_POST,
-} from "../../constants/actionTypes";
+import { SET_FORMDATA, CLOSE_EDIT_POST } from "../../constants/actionTypes";
 
 const Form = () => {
   const classes = useStyle();
@@ -53,9 +49,11 @@ const Form = () => {
 
     formData.append("title", postData.title);
     formData.append("message", postData.message);
-    formData.append("deleteAll", postData.deleteAll);
+    formData.append(
+      "deleteAll",
+      postData.deleteAll ? postData.deleteAll : false
+    );
     postData.tags.forEach((tag) => formData.append("tags", tag));
-
     setSubmitLoading(true);
     if (post) {
       await dispatch(updatePost(post._id, formData));
@@ -63,23 +61,6 @@ const Form = () => {
       await dispatch(createPost(formData, history));
     }
     dispatch({ type: CLOSE_EDIT_POST });
-    if (!unmount.current) {
-      clear();
-      setSubmitLoading(false);
-    } else {
-      dispatch({ type: CLEAN_FORMDATA });
-    }
-  };
-
-  const clear = () => {
-    setPostData({
-      title: "",
-      message: "",
-      tags: [],
-      selectfile: [],
-      sendFile: [],
-      deleteAll: false,
-    });
   };
 
   const handleDeleteTag = (filterTagIdx) => {
@@ -311,11 +292,13 @@ const Form = () => {
         )}
 
         <div className={classes.button}>
-          <Button type="submit" color="primary" variant="contained">
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            disabled={submitLoading}
+          >
             {post ? "儲存" : "發佈"}
-          </Button>
-          <Button color="secondary" variant="contained" onClick={clear}>
-            清空
           </Button>
         </div>
       </form>

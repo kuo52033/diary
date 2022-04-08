@@ -213,8 +213,8 @@ export const updatePost = async (req, res) => {
   const { id } = req.params;
   const updatePost = req.body;
   const files = req.files;
-  let imagePath = [];
 
+  let imagePath = [];
   try {
     if (!mongoose.Types.ObjectId.isValid(id))
       return res.status(404).send("no id with that post!");
@@ -229,7 +229,7 @@ export const updatePost = async (req, res) => {
       post.selectfile = imagePath;
       await post.save();
     } else {
-      if (updatePost.deleteAll) {
+      if (updatePost.deleteAll === "true") {
         await deleteImage(post.selectfile);
         post.selectfile = [];
         await post.save();

@@ -4,7 +4,6 @@ import {
   CREATE,
   UPDATE,
   SET_FORMDATA,
-  CLEAN_FORMDATA,
   CLEAN_POST,
   OPEN_EDIT_POST,
   CLOSE_EDIT_POST,
@@ -28,6 +27,7 @@ const initialState = {
       tags: [],
       selectfile: [],
       sendFile: [],
+      deleteAll: false,
     },
   },
   totalPages: 0,
@@ -62,7 +62,9 @@ const posts = (state = initialState, action) => {
         post: state.post
           ? {
               ...state.post,
-              ...action.payload.post,
+              message: action.payload.post.get("message"),
+              title: action.payload.post.get("title"),
+              tags: [...action.payload.post.getAll("tags")],
               selectfile: [...action.payload.imagePath],
             }
           : null,
@@ -71,7 +73,8 @@ const posts = (state = initialState, action) => {
               action.payload.id === post._id
                 ? {
                     ...post,
-                    ...action.payload.post,
+                    title: action.payload.post.get("title"),
+                    tags: [...action.payload.post.getAll("tags")],
                     selectfile: [...action.payload.imagePath],
                   }
                 : post
@@ -89,14 +92,6 @@ const posts = (state = initialState, action) => {
       return {
         ...state,
         editPost: { ...state.editPost, formPostData: { ...action.payload } },
-      };
-    case CLEAN_FORMDATA:
-      return {
-        ...state,
-        editPost: {
-          ...state.editPost,
-          formPostData: { ...initialState.editPost.formPostData },
-        },
       };
     case CLEAN_POST:
       return { ...state, post: null };
