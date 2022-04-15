@@ -16,6 +16,8 @@ import {
   UPDATE_POST_AUTH,
   FETCH_PAGINATE,
   DELETE,
+  PROGRESS,
+  PROGRESS_END,
 } from "../constants/actionTypes";
 import { logout } from "./auth";
 
@@ -101,7 +103,10 @@ export const createPost = (formData, history) => {
   return async (dispatch, getState) => {
     try {
       const state = getState();
+      dispatch({ type: PROGRESS });
+
       const { data } = await api.createPost(formData);
+      dispatch({ type: PROGRESS_END });
 
       if (Number(state.posts.currentPage) === 1) {
         dispatch({ type: CREATE, payload: data.sendPost });
@@ -124,8 +129,9 @@ export const createPost = (formData, history) => {
 export const updatePost = (id, formData) => {
   return async (dispatch) => {
     try {
+      dispatch({ type: PROGRESS });
       const { data } = await api.updatePost(id, formData);
-
+      dispatch({ type: PROGRESS_END });
       dispatch({
         type: UPDATE,
         payload: { id, post: formData, imagePath: data.imagePath },
@@ -150,7 +156,9 @@ export const updatePost = (id, formData) => {
 export const deletePost = (id, history) => {
   return async (dispatch) => {
     try {
+      dispatch({ type: PROGRESS });
       const { data } = await api.deletePost(id);
+      dispatch({ type: PROGRESS_END });
       dispatch({ type: DELETE, payload: id });
       dispatch({ type: DELETE_POST_AUTH, payload: id });
       if (history) history.replace();

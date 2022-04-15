@@ -7,6 +7,7 @@ import {
   Avatar,
   Box,
   Button,
+  CircularProgress,
   Drawer,
   Tooltip,
   Typography,
@@ -29,7 +30,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const location = useLocation();
-  const { sidebar } = useSelector((state) => state.status);
+  const { sidebar, progress } = useSelector((state) => state.status);
   const { myData: user } = useSelector((state) => state.auth);
   const [openMenu, setOpenMenu] = useState(false);
   const matchMD = useMediaQuery(theme.breakpoints.down("md"));
@@ -112,7 +113,7 @@ const Navbar = () => {
               <LibraryBooksIcon
                 className={`${classes.listIcon} ${openMenu && "active"}`}
               />
-              <Box className={classes.listMain}>貼文列表</Box>
+              <Box>貼文列表</Box>
             </Box>
           </li>
         </Link>
@@ -130,7 +131,7 @@ const Navbar = () => {
                 <LockIcon
                   className={`${classes.listIcon} ${openMenu && "active"}`}
                 />
-                <Box className={classes.listMain}>登入</Box>
+                <Box>登入</Box>
               </Box>
             </li>
           </Link>
@@ -148,7 +149,7 @@ const Navbar = () => {
                 <AddIcon
                   className={`${classes.listIcon} ${openMenu && "active"}`}
                 />
-                <Box className={classes.listMain}>新增貼文</Box>
+                <Box>新增貼文</Box>
               </Box>
             </li>
             <Link to={`/user/${user._id}`} className={classes.listLink}>
@@ -165,7 +166,7 @@ const Navbar = () => {
                   <PersonIcon
                     className={`${classes.listIcon} ${openMenu && "active"}`}
                   />
-                  <Box className={classes.listMain}>個人資料</Box>
+                  <Box>個人資料</Box>
                 </Box>
               </li>
             </Link>
@@ -187,7 +188,7 @@ const Navbar = () => {
                   <BookmarkIcon
                     className={`${classes.listIcon} ${openMenu && "active"}`}
                   />
-                  <Box className={classes.listMain}>我的收藏</Box>
+                  <Box>我的收藏</Box>
                 </Box>
               </li>
             </Link>
@@ -203,12 +204,21 @@ const Navbar = () => {
                 <ExitToAppIcon
                   className={`${classes.listIcon} ${openMenu && "active"}`}
                 />
-                <Box className={classes.listMain}>登出</Box>
+                <Box>登出</Box>
               </Box>
             </li>
           </>
         )}
       </ul>
+      {progress && (
+        <Box className={`${classes.circularBox} ${openMenu && "active"}`}>
+          <CircularProgress
+            size={25}
+            className={`${classes.circular} ${openMenu && "active"}`}
+          />
+          <Box style={{ color: "grey" }}>處理中</Box>
+        </Box>
+      )}
     </Box>
   );
 

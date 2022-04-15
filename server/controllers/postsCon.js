@@ -1,7 +1,6 @@
 import postMessage, { Comment } from "../modules/postMessage.js";
 import mongoose from "mongoose";
 import User from "../modules/user.js";
-import * as fs from "fs";
 import cloudinary from "cloudinary";
 
 export const getPaginate = async (req, res) => {

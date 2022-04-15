@@ -21,14 +21,7 @@ const initialState = {
   editPost: {
     post: null,
     openEditPost: false,
-    formPostData: {
-      title: "",
-      message: "",
-      tags: [],
-      selectfile: [],
-      sendFile: [],
-      deleteAll: false,
-    },
+    formPostData: null,
   },
   totalPages: 0,
   currentPage: 0,

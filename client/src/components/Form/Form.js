@@ -23,6 +23,14 @@ import { createPost, updatePost } from "../../actions/posts";
 import Tag from "./Tag/Tag";
 import { SET_FORMDATA, CLOSE_EDIT_POST } from "../../constants/actionTypes";
 
+const initialForm = {
+  title: "",
+  message: "",
+  tags: [],
+  selectfile: [],
+  sendFile: [],
+};
+
 const Form = () => {
   const classes = useStyle();
   const dispatch = useDispatch();
@@ -31,13 +39,14 @@ const Form = () => {
   const unmount = useRef(false);
 
   const { formPostData, post } = useSelector((state) => state.posts.editPost);
-  const [postData, setPostData] = useState(post || formPostData);
+  const [postData, setPostData] = useState(
+    post ? post : formPostData ? formPostData : initialForm
+  );
 
   const [openTag, setOpenTag] = useState(
     postData.tags.length !== 0 ? true : false
   );
   const [imageLoading, setImageLoading] = useState(false);
-  const [submitLoading, setSubmitLoading] = useState(false);
 
   const ispost = useRef(Boolean(post));
 
@@ -54,12 +63,12 @@ const Form = () => {
       postData.deleteAll ? postData.deleteAll : false
     );
     postData.tags.forEach((tag) => formData.append("tags", tag));
-    setSubmitLoading(true);
     if (post) {
-      await dispatch(updatePost(post._id, formData));
+      dispatch(updatePost(post._id, formData));
     } else {
-      await dispatch(createPost(formData, history));
+      dispatch(createPost(formData, history));
     }
+    setPostData(initialForm);
     dispatch({ type: CLOSE_EDIT_POST });
   };
 
@@ -99,11 +108,14 @@ const Form = () => {
       return (
         image.type.match(/image.png/) ||
         image.type.match(/image.jpg/) ||
-        image.type.match(/image.jpeg/)
+        image.type.match(/image.jpeg/) ||
+        image.type.match(/image.gif/) ||
+        image.type.match(/image.svg/)
       );
     });
 
     setImageLoading(true);
+    //將照片轉換為 base64 已顯示在畫面上
     const result = await Promise.all(
       filterArray.map(async (image) => {
         const compress = await imageCompression(image, options);
@@ -296,13 +308,12 @@ const Form = () => {
             type="submit"
             color="primary"
             variant="contained"
-            disabled={submitLoading}
+            disabled={post === postData}
           >
             {post ? "儲存" : "發佈"}
           </Button>
         </div>
       </form>
-      {submitLoading && <CircularProgress className={classes.circular} />}
     </Paper>
   );
 };

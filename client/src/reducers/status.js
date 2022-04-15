@@ -5,12 +5,15 @@ import {
   SET_FEEDBACK,
   OPEN_SIDEBAR,
   CLOSE_SIDEBAR,
+  PROGRESS,
+  PROGRESS_END,
 } from "../constants/actionTypes";
 
 const initialState = {
   feedback: [],
   error: [],
   sidebar: false,
+  progress: false,
 };
 
 const randomId = () => Math.floor(Math.random() * 10000) + 1;
@@ -37,7 +40,6 @@ const status = (state = initialState, action) => {
       return {
         ...state,
         error: [...state.error, { id: randomId(), content: action.payload }],
-        status: "idle",
       };
     case ERROR_CLEAN:
       return {
@@ -50,6 +52,10 @@ const status = (state = initialState, action) => {
       return { ...state, sidebar: true };
     case CLOSE_SIDEBAR:
       return { ...state, sidebar: false };
+    case PROGRESS:
+      return { ...state, progress: true };
+    case PROGRESS_END:
+      return { ...state, progress: false };
   }
 };
 

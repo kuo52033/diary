@@ -100,10 +100,4 @@ export default makeStyles((theme) => ({
     bottom: "5px",
     right: "15px",
   },
-  circular: {
-    position: "absolute",
-    color: "gray",
-    bottom: 35,
-    right: 30,
-  },
 }));

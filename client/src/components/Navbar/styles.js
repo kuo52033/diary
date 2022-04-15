@@ -111,5 +111,22 @@ export default makeStyles((theme) => ({
       marginBottom: "5px",
     },
   },
-  listMain: {},
+  circularBox: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    "&.active": {
+      flexDirection: "column",
+    },
+  },
+  circular: {
+    color: "gray",
+    marginRight: "15px",
+    "&.active": {
+      marginRight: 0,
+      marginBottom: "10px",
+    },
+  },
 }));
