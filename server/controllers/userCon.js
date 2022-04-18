@@ -54,7 +54,11 @@ export const userSignin = async (req, res) => {
     });
 
     res.status(200).json({
-      result: { _id, name, avatar: existingUser.thumbnail },
+      result: {
+        _id,
+        name,
+        avatar: existingUser.avatar.url ? existingUser.thumbnail : null,
+      },
       message: "登入成功",
     });
   } catch (error) {
@@ -173,7 +177,9 @@ export const getUserProfile = async (req, res) => {
 
     res.status(200).json({
       ...userData,
-      avatar: userData.avatar.url.replace("/upload", "/upload/w_200"),
+      avatar: userData.avatar?.url
+        ? userData.avatar.url.replace("/upload", "/upload/w_200")
+        : null,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });

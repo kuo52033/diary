@@ -122,7 +122,6 @@ export default makeStyles((theme) => ({
     },
   },
   circular: {
-    color: "gray",
     marginRight: "15px",
     "&.active": {
       marginRight: 0,

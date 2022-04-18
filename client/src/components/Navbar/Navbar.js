@@ -214,6 +214,7 @@ const Navbar = () => {
         <Box className={`${classes.circularBox} ${openMenu && "active"}`}>
           <CircularProgress
             size={25}
+            style={{ color: "gray" }}
             className={`${classes.circular} ${openMenu && "active"}`}
           />
           <Box style={{ color: "grey" }}>處理中</Box>
