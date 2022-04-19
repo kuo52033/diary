@@ -21,6 +21,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import AddIcon from "@material-ui/icons/Add";
+import Chat from "@material-ui/icons/Chat";
 
 import { CLOSE_SIDEBAR, OPEN_EDIT_POST } from "../../constants/actionTypes";
 import { logout } from "../../actions/auth";
@@ -35,6 +36,23 @@ const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const matchMD = useMediaQuery(theme.breakpoints.down("md"));
   const pathname = location.pathname;
+
+  const renderLink = (path, name, Icon) => {
+    return (
+      <Link to={path} className={classes.listLink}>
+        <li
+          className={`${classes.listItem} ${pathname === path && "page"} ${
+            pathname !== path && classes.listItemHover
+          } ${openMenu && "active"}`}
+        >
+          <Box className={`${classes.listItemBox} ${openMenu && "active"}`}>
+            <Icon className={`${classes.listIcon} ${openMenu && "active"}`} />
+            <Box>{name}</Box>
+          </Box>
+        </li>
+      </Link>
+    );
+  };
 
   useEffect(() => {
     if (matchMD) setOpenMenu(false);
@@ -101,41 +119,8 @@ const Navbar = () => {
       )}
 
       <ul>
-        <Link to="/posts" className={classes.listLink}>
-          <li
-            className={`${classes.listItem} ${
-              pathname === "/posts" && "page"
-            } ${pathname !== "/posts" && classes.listItemHover} ${
-              openMenu && "active"
-            }`}
-          >
-            <Box className={`${classes.listItemBox} ${openMenu && "active"}`}>
-              <LibraryBooksIcon
-                className={`${classes.listIcon} ${openMenu && "active"}`}
-              />
-              <Box>貼文列表</Box>
-            </Box>
-          </li>
-        </Link>
-
-        {!user && (
-          <Link to="/auth" className={classes.listLink}>
-            <li
-              className={`${classes.listItem} ${
-                pathname === "/auth" && "page"
-              } ${pathname !== "/auth" && classes.listItemHover} ${
-                openMenu && "active"
-              }`}
-            >
-              <Box className={`${classes.listItemBox} ${openMenu && "active"}`}>
-                <LockIcon
-                  className={`${classes.listIcon} ${openMenu && "active"}`}
-                />
-                <Box>登入</Box>
-              </Box>
-            </li>
-          </Link>
-        )}
+        {renderLink("/posts", "貼文列表", LibraryBooksIcon)}
+        {!user && renderLink("/auth", "登入", LockIcon)}
         {user && (
           <>
             <li
@@ -152,47 +137,9 @@ const Navbar = () => {
                 <Box>新增貼文</Box>
               </Box>
             </li>
-            <Link to={`/user/${user._id}`} className={classes.listLink}>
-              <li
-                className={`${classes.listItem} ${
-                  pathname === `/user/${user._id}` && "page"
-                } ${
-                  pathname !== `/user/${user._id}` && classes.listItemHover
-                } ${openMenu && "active"}`}
-              >
-                <Box
-                  className={`${classes.listItemBox} ${openMenu && "active"}`}
-                >
-                  <PersonIcon
-                    className={`${classes.listIcon} ${openMenu && "active"}`}
-                  />
-                  <Box>個人資料</Box>
-                </Box>
-              </li>
-            </Link>
-            <Link
-              to={`/user/${user._id}/favorite`}
-              className={classes.listLink}
-            >
-              <li
-                className={`${classes.listItem} ${
-                  pathname === `/user/${user._id}/favorite` && "page"
-                } ${
-                  pathname !== `/user/${user._id}/favorite` &&
-                  classes.listItemHover
-                } ${openMenu && "active"}`}
-              >
-                <Box
-                  className={`${classes.listItemBox} ${openMenu && "active"}`}
-                >
-                  <BookmarkIcon
-                    className={`${classes.listIcon} ${openMenu && "active"}`}
-                  />
-                  <Box>我的收藏</Box>
-                </Box>
-              </li>
-            </Link>
-
+            {renderLink(`/user/${user._id}`, "個人資料", PersonIcon)}
+            {renderLink(`/user/${user._id}/favorite`, "我的收藏", BookmarkIcon)}
+            {renderLink("/chat", "聊天室", Chat)}
             <li
               className={`${classes.listItem} ${classes.listItemHover} ${
                 openMenu && "active"

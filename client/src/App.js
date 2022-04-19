@@ -15,6 +15,7 @@ import Auth from "./components/Auth/Auth";
 import UserProfile from "./components/UserProfile/UserProfile";
 import Feedback from "./components/Feedback/Feedback";
 import Form from "./components/Form/Form";
+import Chat from "./components/Chat/Chat";
 import { CLOSE_EDIT_POST } from "./constants/actionTypes";
 
 const App = () => {
@@ -44,6 +45,7 @@ const App = () => {
           <Route path="/user/:userId" component={UserProfile} />
           <Route path="/auth" exact component={Auth} />
           <Route path="/posts/:postId" exact component={PostDetail} />
+          <Route path="/chat" exact component={Chat} />
         </Switch>
       </Box>
     </Router>

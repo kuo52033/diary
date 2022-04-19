@@ -68,7 +68,7 @@ export default makeStyles((theme) => ({
   userAvatar: {
     fontSize: "13px",
     marginRight: "10px",
-    border: "1px solid white",
+    border: "1px solid rgba(0, 0, 0, 0.1)",
   },
   avatarName: {
     fontFamily: "inherit",
