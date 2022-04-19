@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import moment from "moment";
 
 import useStyle from "./styles";
 import { Box, Button, Divider, Typography, TextField } from "@material-ui/core";
@@ -15,20 +16,18 @@ const DetailsProfile = ({ setOpenEdit }) => {
   const classes = useStyle();
   const { userProfile } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const [selectedDate, handleDateChange] = useState(userProfile?.birthDate);
 
+  const [selectedDate, handleDateChange] = useState(
+    userProfile.birthDate || new Date()
+  );
   const [openProfileInput, setOpenProfileInput] = useState({
     education: false,
     workExperience: false,
   });
-
   const [profileInput, setProfileInput] = useState({
     education: "",
     workExperience: "",
   });
-
-  //   const [educationInput, setEducationInput] = useState("");
-  //   const [workExperienceInput, setWorkExperienceInput] = useState("");
 
   const handleSaveInput = (type) => {
     dispatch(
@@ -53,7 +52,8 @@ const DetailsProfile = ({ setOpenEdit }) => {
     },
     [userProfile, dispatch]
   );
-
+  // console.log("selectedDate:", selectedDate);
+  // console.log("userBirthDay", userBirthday);
   return (
     <Box className={classes.outerBox}>
       <Button
@@ -87,8 +87,9 @@ const DetailsProfile = ({ setOpenEdit }) => {
             onClick={handleSaveBirthDate}
             style={{ marginTop: "10px", width: "14%" }}
             disabled={
-              userProfile?.birthDate
-                ? selectedDate.toString() === userProfile?.birthDate.toString()
+              userProfile.birthDate
+                ? moment(selectedDate).format("yyyy/MM/DD") ===
+                  moment(userProfile.birthDate).format("yyyy/MM/DD")
                 : false
             }
           >
