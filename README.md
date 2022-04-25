@@ -43,7 +43,6 @@
 ## 使用
 
 ```
-// set up your github personal access token (REACT_APP_AUTHTOKEN) in .env file, otherwise you will get 401 error.
 npm install
 npm run start
 ```
