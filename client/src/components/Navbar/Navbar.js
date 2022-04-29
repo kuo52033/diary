@@ -97,9 +97,8 @@ const Navbar = () => {
               <Avatar
                 className={classes.userAvatar}
                 src={
-                  user.avatar
-                    ? user.avatar
-                    : "https://res.cloudinary.com/dhawohjee/image/upload/v1648186493/diary/default_avatar_ip9dhd.png"
+                  user.avatar ||
+                  "https://res.cloudinary.com/dhawohjee/image/upload/v1648186493/diary/default_avatar_ip9dhd.png"
                 }
               />
             </Tooltip>

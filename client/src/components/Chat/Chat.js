@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import useStyle from "./styles";
 import { Container, Box } from "@material-ui/core";
@@ -7,6 +7,8 @@ import ChatList from "./ChatList/ChatList";
 import ChatContent from "./ChatContent/ChatContent";
 
 const Chat = () => {
+  const [currentChat, setCurrentChat] = useState(null);
+
   return (
     <Container
       maxWidth="md"
@@ -22,10 +24,10 @@ const Chat = () => {
       }}
     >
       <Box style={{ flex: "0 0 30%" }}>
-        <ChatList />
+        <ChatList setCurrentChat={setCurrentChat} />
       </Box>
       <Box style={{ flex: "0 0 70%" }}>
-        <ChatContent />
+        <ChatContent currentChat={currentChat} />
       </Box>
     </Container>
   );

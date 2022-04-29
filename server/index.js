@@ -3,6 +3,8 @@ import cors from "cors";
 import mongoose from "mongoose";
 import postsRouter from "./routes/posts.js";
 import userRouter from "./routes/user.js";
+import chatRouter from "./routes/chat.js";
+import messageRouter from "./routes/message.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
@@ -36,6 +38,8 @@ app.use(helmet());
 
 app.use("/posts", postsRouter);
 app.use("/user", userRouter);
+app.use("/chat", chatRouter);
+app.use("/message", messageRouter);
 
 const PORT = process.env.PORT || 5000;
 

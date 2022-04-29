@@ -33,7 +33,7 @@ export default makeStyles(() => ({
     maxWidth: "45%",
     padding: "15px",
     margin: "10px 20px",
-    borderRadius: "35px",
+    borderRadius: "20px",
   },
   messageMe: {
     alignSelf: "flex-end",

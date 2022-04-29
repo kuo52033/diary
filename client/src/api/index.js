@@ -68,5 +68,9 @@ export const updateUserProfile = (updateData, type) =>
 export const favoritePost = (postId) => API.patch(`/user/${postId}/favorite`);
 export const unFavoritePost = (postId) =>
   API.patch(`/user/${postId}/unfavorite`);
+export const getAllChats = (userId) => API.get(`/chat/${userId}`);
+export const getAllMessages = (chatId) => API.get(`/message/${chatId}`);
+export const sendMessage = (chatId, senderId, content) =>
+  API.post("/message", { chatId, senderId, content });
 
 export { baseURL };

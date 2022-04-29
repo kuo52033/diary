@@ -53,6 +53,15 @@ import {
   OPEN_EDIT_POST,
 } from "../../constants/actionTypes";
 
+export const renderTime = (time) => {
+  return moment(new Date()).format("YYYY年MM月DD日") ===
+    moment(time).format("YYYY年MM月DD日")
+    ? moment(time).locale("zh-tw").fromNow()
+    : moment(time).isSame(new Date(), "year")
+    ? moment(time).format("MM月DD日")
+    : moment(time).format("YYYY年MM月DD日");
+};
+
 const PostDetail = ({ id, setcheckFullwidth, setOpenDialog }) => {
   const [comment, setComment] = useState("");
   const { post } = useSelector((state) => state.posts);
@@ -195,15 +204,6 @@ const PostDetail = ({ id, setcheckFullwidth, setOpenDialog }) => {
     } else {
       if (!unmount.current) setOpenDialog(false);
     }
-  };
-
-  const renderTime = (time) => {
-    return moment(new Date()).format("YYYY年MM月DD日") ===
-      moment(time).format("YYYY年MM月DD日")
-      ? moment(time).locale("zh-tw").fromNow()
-      : moment(time).isSame(new Date(), "year")
-      ? moment(time).format("MM月DD日")
-      : moment(time).format("YYYY年MM月DD日");
   };
 
   const goUserProfile = (userId = null) => {
