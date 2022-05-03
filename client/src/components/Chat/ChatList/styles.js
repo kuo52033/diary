@@ -17,10 +17,22 @@ export default makeStyles(() => ({
       backgroundColor: "rgba(255, 255, 255, 0.6)",
     },
   },
+  currentChat: {
+    backgroundColor: "rgba(0, 0, 0, 0.1)",
+    pointerEvents: "none",
+  },
   avatar: {
     border: "1px solid rgba(0, 0, 0, 0.1)",
     width: "45px",
     height: "45px",
     marginRight: "15px",
+  },
+  contentBox: {
+    flex: 1,
+  },
+  MessageAndTimeBox: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 }));

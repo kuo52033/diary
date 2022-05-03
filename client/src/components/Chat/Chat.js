@@ -1,13 +1,18 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import useStyle from "./styles";
 import { Container, Box } from "@material-ui/core";
 
 import ChatList from "./ChatList/ChatList";
 import ChatContent from "./ChatContent/ChatContent";
 
-const Chat = () => {
+const Chat = ({ mySocket }) => {
   const [currentChat, setCurrentChat] = useState(null);
+  const [allChats, setAllChats] = useState([]);
+  const { myData: user } = useSelector((state) => state.auth);
+
+  if (!user) return <Redirect to="/posts" />;
 
   return (
     <Container
@@ -24,10 +29,20 @@ const Chat = () => {
       }}
     >
       <Box style={{ flex: "0 0 30%" }}>
-        <ChatList setCurrentChat={setCurrentChat} />
+        <ChatList
+          currentChat={currentChat}
+          setCurrentChat={setCurrentChat}
+          mySocket={mySocket}
+          allChats={allChats}
+          setAllChats={setAllChats}
+        />
       </Box>
       <Box style={{ flex: "0 0 70%" }}>
-        <ChatContent currentChat={currentChat} />
+        <ChatContent
+          currentChat={currentChat}
+          mySocket={mySocket}
+          setAllChats={setAllChats}
+        />
       </Box>
     </Container>
   );

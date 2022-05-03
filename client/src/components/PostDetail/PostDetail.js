@@ -53,7 +53,7 @@ import {
   OPEN_EDIT_POST,
 } from "../../constants/actionTypes";
 
-export const renderTime = (time) => {
+const renderTime = (time) => {
   return moment(new Date()).format("YYYY年MM月DD日") ===
     moment(time).format("YYYY年MM月DD日")
     ? moment(time).locale("zh-tw").fromNow()

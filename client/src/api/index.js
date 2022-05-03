@@ -72,5 +72,7 @@ export const getAllChats = (userId) => API.get(`/chat/${userId}`);
 export const getAllMessages = (chatId) => API.get(`/message/${chatId}`);
 export const sendMessage = (chatId, senderId, content) =>
   API.post("/message", { chatId, senderId, content });
+export const updateRead = (chatId, userId) =>
+  API.patch(`/message/read/${chatId}/${userId}`);
 
 export { baseURL };

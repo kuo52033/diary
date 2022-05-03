@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import useStyle from "./styles";
@@ -6,32 +6,50 @@ import { Avatar, Box, Typography } from "@material-ui/core";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 import { getAllChats } from "../../../api";
+import { renderMessageTime } from "../ChatContent/ChatContent";
 
-const ChatList = ({ setCurrentChat }) => {
+const ChatList = ({
+  currentChat,
+  setCurrentChat,
+  mySocket,
+  allChats,
+  setAllChats,
+}) => {
   const classes = useStyle();
-  const [allChats, setAllChats] = useState([]);
   const { myData: user } = useSelector((state) => state.auth);
 
   const renderChat = (chat) => {
-    const receiver = chat.members.find((m) => m._id !== user._id);
+    const receiver = chat.members?.find((m) => m._id !== user._id);
     return (
       <Box
-        className={classes.chatBox}
+        className={`${classes.chatBox} ${
+          currentChat?._id === chat._id && classes.currentChat
+        }`}
         key={chat._id}
         onClick={() => setCurrentChat(chat)}
       >
         <Avatar
           src={
-            receiver?.avatar.url ||
+            receiver?.avatar?.url ||
             "https://res.cloudinary.com/dhawohjee/image/upload/v1648186493/diary/default_avatar_ip9dhd.png"
           }
           className={classes.avatar}
         />
-        <Box>
+        <Box className={classes.contentBox}>
           <Typography style={{ fontWeight: "bold" }}>
             {receiver.name}
           </Typography>
-          <Typography variant="caption">message......</Typography>
+          <Box className={classes.MessageAndTimeBox}>
+            <Typography variant="caption" color="textSecondary">
+              {chat.lastestMessage?.content.length > 8
+                ? `${chat.lastestMessage?.content.slice(0, 8)}....`
+                : chat.lastestMessage?.content}
+            </Typography>
+            <Typography variant="caption" color="textSecondary">
+              {chat.lastestMessage?.createdAt &&
+                renderMessageTime(chat.lastestMessage?.createdAt)}
+            </Typography>
+          </Box>
         </Box>
       </Box>
     );
@@ -44,7 +62,25 @@ const ChatList = ({ setCurrentChat }) => {
     };
 
     fetchChats();
-  }, [user]);
+  }, [user, setAllChats]);
+
+  useEffect(() => {
+    if (mySocket.receive) {
+      setAllChats((pre) => {
+        const { chatId, content } = mySocket.receive;
+        const filterChats = pre.filter((c) => c._id !== chatId);
+        const receiveChat = pre.find((p) => p._id === chatId);
+        return [
+          {
+            ...receiveChat,
+            lastestMessage: { content, createdAt: new Date() },
+          },
+          ...filterChats,
+        ];
+      });
+    }
+  }, [mySocket.receive, setAllChats]);
+
   return (
     <Box className={classes.chatListBox}>
       <Box

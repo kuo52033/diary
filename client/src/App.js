@@ -17,10 +17,12 @@ import Feedback from "./components/Feedback/Feedback";
 import Form from "./components/Form/Form";
 import Chat from "./components/Chat/Chat";
 import { CLOSE_EDIT_POST } from "./constants/actionTypes";
+import useSocket from "./hook/useSocket";
 
 const App = () => {
   const dispatch = useDispatch();
   const { openEditPost } = useSelector((state) => state.posts.editPost);
+  const mySocket = useSocket();
 
   return (
     <Router basename={process.env.PUBLIC_URL}>
@@ -45,7 +47,11 @@ const App = () => {
           <Route path="/user/:userId" component={UserProfile} />
           <Route path="/auth" exact component={Auth} />
           <Route path="/posts/:postId" exact component={PostDetail} />
-          <Route path="/chat" exact component={Chat} />
+          <Route
+            path="/chat"
+            exact
+            render={() => <Chat mySocket={mySocket} />}
+          />
         </Switch>
       </Box>
     </Router>

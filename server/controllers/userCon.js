@@ -26,13 +26,13 @@ export const userSignin = async (req, res) => {
     const accessToken = jwt.sign(
       { id: existingUser._id },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "80m" }
+      { expiresIn: "30m" }
     );
 
     const refreshToken = jwt.sign(
       { id: existingUser._id },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "1w" }
+      { expiresIn: "365d" }
     );
     await User.findByIdAndUpdate(existingUser._id, {
       $push: { refreshToken: refreshToken },
@@ -94,7 +94,7 @@ export const userSignup = async (req, res) => {
     const refreshToken = jwt.sign(
       { id: result._id },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "1w" }
+      { expiresIn: "365d" }
     );
     await User.findByIdAndUpdate(result._id, {
       $push: { refreshToken: refreshToken },
