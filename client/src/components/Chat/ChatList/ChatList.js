@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import useStyle from "./styles";
 import { Avatar, Box, Typography } from "@material-ui/core";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import AddIcon from "@material-ui/icons/AddCircleOutline";
 
 import { getAllChats } from "../../../api";
 import { renderMessageTime } from "../ChatContent/ChatContent";
@@ -89,7 +89,7 @@ const ChatList = ({
           borderBottom: "1px solid rgba(0, 0, 0, 0.4)",
         }}
       >
-        <AddCircleOutlineIcon
+        <AddIcon
           fontSize="large"
           style={{ color: "gray", cursor: "pointer" }}
         />

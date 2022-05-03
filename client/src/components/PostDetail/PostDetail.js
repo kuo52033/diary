@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import "moment/locale/zh-tw";
 
@@ -77,7 +77,7 @@ const PostDetail = ({ id, setcheckFullwidth, setOpenDialog }) => {
   const [deleteId, setDeleteId] = useState("");
   const classes = useStyle();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const commentDom = useRef();
   const { postId } = useParams();
   const unmount = useRef(false);
@@ -115,7 +115,7 @@ const PostDetail = ({ id, setcheckFullwidth, setOpenDialog }) => {
   }, [post, setcheckFullwidth]);
 
   const searchTag = (tag) => {
-    history.push(`/posts/search?searchQuery=none&tags=${tag}`);
+    navigate(`/posts/search?searchQuery=none&tags=${tag}`);
   };
 
   //新增評論
@@ -199,7 +199,7 @@ const PostDetail = ({ id, setcheckFullwidth, setOpenDialog }) => {
     await dispatch(deletePost(post._id));
     if (postId) {
       if (!unmount.current) {
-        history.replace("/posts");
+        navigate("/posts", { replace: true });
       }
     } else {
       if (!unmount.current) setOpenDialog(false);
@@ -209,9 +209,9 @@ const PostDetail = ({ id, setcheckFullwidth, setOpenDialog }) => {
   const goUserProfile = (userId = null) => {
     if (id) setOpenDialog(false);
     if (userId) {
-      history.push(`/user/${userId}`);
+      navigate(`/user/${userId}`);
     } else {
-      history.push(`/user/${post.creator._id}`);
+      navigate(`/user/${post.creator._id}`);
     }
   };
 

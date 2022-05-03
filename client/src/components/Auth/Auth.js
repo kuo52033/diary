@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation, Redirect } from "react-router-dom";
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -63,7 +63,7 @@ const Auth = ({ SignUp = false }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const unmount = useRef(false);
   const [showPassword, setShowPassword] = useState({
     password: false,
@@ -103,13 +103,13 @@ const Auth = ({ SignUp = false }) => {
     onSubmit: async (value, { resetForm }) => {
       setLoading(true);
       if (isChangePassword) {
-        await dispatch(changePassword(value, history));
+        await dispatch(changePassword(value, navigate));
         resetForm();
       } else {
         if (isSignup) {
-          await dispatch(signup(value, history));
+          await dispatch(signup(value, navigate));
         } else {
-          await dispatch(signin(value, history));
+          await dispatch(signin(value, navigate));
         }
       }
       if (!unmount.current) setLoading(false);
@@ -123,7 +123,7 @@ const Auth = ({ SignUp = false }) => {
   }, []);
 
   if ((user && !isChangePassword) || (!user && isChangePassword))
-    return <Redirect to="/posts" />;
+    return <Navigate to="/posts" />;
 
   return (
     <Slide in unmountOnExit mountOnEnter direction="left">

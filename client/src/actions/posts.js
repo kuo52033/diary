@@ -99,18 +99,17 @@ export const getUserFavorites = (userId) => async (dispatch) => {
   }
 };
 
-export const createPost = (formData, history) => {
+export const createPost = (formData) => {
   return async (dispatch, getState) => {
     try {
       const state = getState();
-      dispatch({ type: PROGRESS });
 
+      dispatch({ type: PROGRESS });
       const { data } = await api.createPost(formData);
       dispatch({ type: PROGRESS_END });
 
       if (Number(state.posts.currentPage) === 1) {
         dispatch({ type: CREATE, payload: data.sendPost });
-        if (history) history.replace();
       }
       dispatch({ type: CREATE_POST_AUTH, payload: data.sendPost });
       dispatch({ type: SET_FEEDBACK, payload: data.message });
@@ -153,7 +152,7 @@ export const updatePost = (id, formData) => {
   };
 };
 
-export const deletePost = (id, history) => {
+export const deletePost = (id, navigate) => {
   return async (dispatch) => {
     try {
       dispatch({ type: PROGRESS });
@@ -161,7 +160,7 @@ export const deletePost = (id, history) => {
       dispatch({ type: PROGRESS_END });
       dispatch({ type: DELETE, payload: id });
       dispatch({ type: DELETE_POST_AUTH, payload: id });
-      if (history) history.replace();
+      if (navigate) navigate("", { replace: true });
       dispatch({ type: SET_FEEDBACK, payload: data.message });
     } catch (error) {
       if (error.message === "Network Error") {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useRouteMatch } from "react-router-dom";
+import { useParams, matchRoutes, useLocation } from "react-router-dom";
 
 import useStyle from "./styles";
 import {
@@ -24,26 +24,19 @@ const MyPosts = () => {
   const [postId, setPostId] = useState(null);
   const [checkFullwidth, setCheckFullwidth] = useState(true);
   const { userId } = useParams();
-  const { path } = useRouteMatch();
+  const location = useLocation();
+  const [
+    {
+      route: { path },
+    },
+  ] = matchRoutes(
+    [{ path: "/user/:userId/favorite" }, { path: "/user/:userId" }],
+    location
+  );
 
   const posts = useSelector((state) =>
     path === "/user/:userId" ? state.auth.userPosts : state.auth.userFavorites
   );
-
-  // const observe = useRef();
-  // const lastEL = useCallback(
-  //   (node) => {
-  //     if (loadingPosts) return;
-  //     observe.current = new IntersectionObserver((entries) => {
-  //       if (entries[0].isIntersecting && hasMore) {
-  //         setPage((prev) => prev + 1);
-  //         observe.current.disconnect();
-  //       }
-  //     });
-  //     if (node) observe.current.observe(node);
-  //   },
-  //   [loadingPosts]
-  // );
 
   const openDetailPost = (id) => {
     setOpenDialog(true);

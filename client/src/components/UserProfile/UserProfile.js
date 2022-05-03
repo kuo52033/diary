@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  useRouteMatch,
-  Route,
-  Link,
-  Switch,
+  matchRoutes,
+  useNavigate,
   useParams,
+  useLocation,
+  Outlet,
 } from "react-router-dom";
 
 import useStyle from "./styles";
@@ -35,7 +35,6 @@ import {
   getUserPostLength,
   updateUserAvatar,
 } from "../../actions/auth";
-import MyPosts from "./UserProfileInner/MyPosts/MyPosts";
 import EditProfile from "./UserProfileInner/About/EditProfile";
 import { OPEN_SIDEBAR, CLEAN_USER_DATA } from "../../constants/actionTypes";
 import ProfileDetailList from "./ProfileDetailList";
@@ -55,8 +54,12 @@ const UserProfile = () => {
     userProfile,
     userPostLength,
   } = useSelector((state) => state.auth);
-  const { path, url } = useRouteMatch();
-  const matchFavorite = useRouteMatch({ path: "/user/:userId/favorite" });
+  const location = useLocation();
+  const navigate = useNavigate();
+  const matchRoute = matchRoutes(
+    [{ path: "/user/:userId/favorite" }, { path: "/user/:userId" }],
+    location
+  );
 
   useEffect(() => {
     dispatch(getUserProfile(userId));
@@ -85,20 +88,20 @@ const UserProfile = () => {
       return;
     }
     const reader = new FileReader();
-    reader.readAsDataURL(image);
+    reader.readpathname(image);
     reader.onload = () => {
       avatarRef.current.src = reader.result;
     };
   };
 
-  const router = () => {
-    return (
-      <Switch>
-        <Route path={path} exact component={MyPosts} />
-        <Route path={`${path}/favorite`} exact component={MyPosts} />
-      </Switch>
-    );
-  };
+  // const router = () => {
+  //   return (
+  //     <Routes>
+  //       <Route path={path} exact component={MyPosts} />
+  //       <Route path={`${path}/favorite`} exact component={MyPosts} />
+  //     </Routes>
+  //   );
+  // };
 
   return (
     <Slide in unmountOnExit mountOnEnter direction="left">
@@ -262,29 +265,31 @@ const UserProfile = () => {
           <List className={classes.list}>
             <ListItem
               className={
-                !matchFavorite ? classes.listItemActive : classes.listItem
+                matchRoute[0].route.path === "/user/:userId"
+                  ? classes.listItemActive
+                  : classes.listItem
               }
               button
-              component={Link}
-              to={url}
+              onClick={() => navigate("")}
             >
               <ViewModuleIcon />
               <ListItemText primary="貼文" style={{ marginLeft: "7px" }} />
             </ListItem>
             <ListItem
               className={
-                matchFavorite ? classes.listItemActive : classes.listItem
+                matchRoute[0].route.path === "/user/:userId/favorite"
+                  ? classes.listItemActive
+                  : classes.listItem
               }
               button
-              component={Link}
-              to={`${url}/favorite`}
+              onClick={() => navigate(`favorite`)}
             >
               <BookmarkBorderIcon />
               <ListItemText primary="珍藏" style={{ marginLeft: "7px" }} />
             </ListItem>
           </List>
         </Paper>
-        {router()}
+        <Outlet />
       </Box>
     </Slide>
   );

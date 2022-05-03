@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import useStyle from "./styles";
@@ -21,7 +21,7 @@ import {
 const Home = () => {
   const classes = useStyle();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const postsTop = useRef(null);
   const { myData: user } = useSelector((state) => state.auth);
@@ -57,7 +57,7 @@ const Home = () => {
   //搜尋
   const searchPosts = () => {
     if (searchTerm) {
-      history.push(
+      navigate(
         `/posts/search?searchQuery=${searchTerm.trim() || "none"}&tags=none`
       );
     }

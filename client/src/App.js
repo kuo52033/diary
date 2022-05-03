@@ -1,8 +1,8 @@
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
-  Redirect,
+  Navigate,
 } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -18,6 +18,7 @@ import Form from "./components/Form/Form";
 import Chat from "./components/Chat/Chat";
 import { CLOSE_EDIT_POST } from "./constants/actionTypes";
 import useSocket from "./hook/useSocket";
+import MyPosts from "./components/UserProfile/UserProfileInner/MyPosts/MyPosts";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -40,19 +41,18 @@ const App = () => {
       <Box sx={{ display: "flex" }}>
         <Navbar />
 
-        <Switch>
-          <Route path="/" exact component={() => <Redirect to="/posts" />} />
-          <Route path="/posts" exact component={Home} />
-          <Route path="/posts/search" exact component={Home} />
-          <Route path="/user/:userId" component={UserProfile} />
-          <Route path="/auth" exact component={Auth} />
-          <Route path="/posts/:postId" exact component={PostDetail} />
-          <Route
-            path="/chat"
-            exact
-            render={() => <Chat mySocket={mySocket} />}
-          />
-        </Switch>
+        <Routes>
+          <Route index element={<Navigate to="/posts" />} />
+          <Route path="posts" element={<Home />} />
+          <Route path="posts/search" element={<Home />} />
+          <Route path="user/:userId" element={<UserProfile />}>
+            <Route index element={<MyPosts />} />
+            <Route path="favorite" element={<MyPosts />} />
+          </Route>
+          <Route path="auth" element={<Auth />} />
+          <Route path="posts/:postId" element={<PostDetail />} />
+          <Route path="chat" element={<Chat mySocket={mySocket} />} />
+        </Routes>
       </Box>
     </Router>
   );

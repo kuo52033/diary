@@ -10,14 +10,14 @@ import {
   USER_POSTLENGTH,
 } from "../constants/actionTypes";
 
-export const signin = (formData, history) => async (dispatch) => {
+export const signin = (formData, navigate) => async (dispatch) => {
   try {
     const { data } = await api.signIn(formData);
 
     dispatch({ type: AUTH, payload: data.result });
     dispatch({ type: SET_FEEDBACK, payload: data.message });
 
-    history.push("/posts");
+    navigate("/posts");
   } catch (error) {
     if (error.message === "Network Error") {
       dispatch({ type: ERROR, payload: "伺服器異常" });
@@ -27,14 +27,14 @@ export const signin = (formData, history) => async (dispatch) => {
   }
 };
 
-export const signup = (formData, history) => async (dispatch) => {
+export const signup = (formData, navigate) => async (dispatch) => {
   try {
     const { data } = await api.signUp(formData);
 
     dispatch({ type: AUTH, payload: data.result });
     dispatch({ type: SET_FEEDBACK, payload: data.message });
 
-    history.push("/posts");
+    navigate("/posts");
   } catch (error) {
     if (error.message === "Network Error") {
       dispatch({ type: ERROR, payload: "伺服器異常" });

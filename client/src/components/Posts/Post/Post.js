@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import moment from "moment";
 import "moment/locale/zh-tw";
 
@@ -37,7 +37,7 @@ import { OPEN_EDIT_POST } from "../../../constants/actionTypes";
 const Post = ({ post }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const unmount = useRef(false);
   const { myData: user } = useSelector((state) => state.auth);
   const [openMenu, setOpenMenu] = useState(false);
@@ -70,7 +70,7 @@ const Post = ({ post }) => {
   };
 
   const openPost = () => {
-    history.push(`/posts/${post._id}`);
+    navigate(`/posts/${post._id}`);
   };
 
   const clickEdit = () => {
@@ -84,7 +84,7 @@ const Post = ({ post }) => {
   const handleDeletePost = async () => {
     setDeletePostLoading(true);
     closeDeleteDialog();
-    await dispatch(deletePost(post._id, history));
+    await dispatch(deletePost(post._id, navigate));
     if (!unmount.current) setDeletePostLoading(false);
   };
 
@@ -93,14 +93,14 @@ const Post = ({ post }) => {
   };
 
   const searchTag = (tag) => {
-    history.push({
+    navigate({
       pathname: "/posts/search",
       search: `?searchQuery=none&tags=${tag}`,
     });
   };
 
   const goUserProfile = () => {
-    history.push(`/user/${post.creator._id}`);
+    navigate(`/user/${post.creator._id}`);
   };
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { Container, Box } from "@material-ui/core";
@@ -12,7 +12,7 @@ const Chat = ({ mySocket }) => {
   const [allChats, setAllChats] = useState([]);
   const { myData: user } = useSelector((state) => state.auth);
 
-  if (!user) return <Redirect to="/posts" />;
+  if (!user) return <Navigate to="/posts" />;
 
   return (
     <Container
