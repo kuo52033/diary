@@ -37,7 +37,7 @@ const ChatList = ({
         />
         <Box className={classes.contentBox}>
           <Typography style={{ fontWeight: "bold" }}>
-            {receiver.name}
+            {receiver?.name}
           </Typography>
           <Box className={classes.MessageAndTimeBox}>
             <Typography variant="caption" color="textSecondary">

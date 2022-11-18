@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import imageCompression from "browser-image-compression";
 
 import useStyle from "./styles";
@@ -34,7 +33,6 @@ const initialForm = {
 const Form = () => {
   const classes = useStyle();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const dataRef = useRef({});
   const unmount = useRef(false);
 

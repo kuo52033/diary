@@ -129,22 +129,25 @@ const ChatContent = ({ currentChat, mySocket, setAllChats }) => {
 
   //read the message and send data to the friend if enter the chat room or leave the chat room
   useEffect(() => {
-    const { sendReadMessage, sendLeaveChat } = mySocket;
-
+    const { sendReadMessage, sendLeaveChat, socketId } = mySocket;
+    console.log(socketId);
     if (currentChat) {
-      if (lastChat.current && lastChat.current?.chatId !== currentChat?._id) {
-        console.log("send leave");
-        sendLeaveChat(lastChat.current.chatId, lastChat.current.receiverId);
-      }
-
+      console.log("sendread: ", receiver._id);
       updateRead(currentChat._id, receiver._id);
-      sendReadMessage(currentChat._id, receiver._id);
+      sendReadMessage(currentChat._id, receiver._id, socketId);
       lastChat.current = {
         chatId: currentChat._id,
         receiverId: receiver._id,
       };
     }
-  }, [currentChat, receiver, mySocket.receive]);
+
+    return () => {
+      if (lastChat.current || lastChat.current?.chatId !== currentChat?._id) {
+        console.log("send leave:", lastChat.current.receiverId);
+        sendLeaveChat(lastChat.current.chatId, lastChat.current.receiverId);
+      }
+    };
+  }, [currentChat, receiver, user]);
 
   useEffect(() => {
     if (currentChat) {
@@ -157,7 +160,7 @@ const ChatContent = ({ currentChat, mySocket, setAllChats }) => {
         );
       }
     }
-  }, [currentChat, mySocket.read]);
+  }, [currentChat, mySocket.read, mySocket.receive]);
 
   useEffect(() => {
     if (currentChat && currentChat._id === mySocket.receive?.chatId) {

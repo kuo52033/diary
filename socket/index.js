@@ -35,8 +35,6 @@ io.use((socket, next) => {
 });
 
 io.on("connection", async (socket) => {
-  console.log(`${socket.user} is connect`);
-
   socket.on("sendMessage", ({ chatId, receiveUser, content }) => {
     const receiver = fetchUserById(receiveUser);
     if (receiver)
@@ -47,11 +45,12 @@ io.on("connection", async (socket) => {
       });
   });
 
-  socket.on("sendReadMessage", ({ chatId, receiveUser }) => {
+  socket.on("sendReadMessage", ({ chatId, receiveUser, sender }) => {
     const receiver = fetchUserById(receiveUser);
     if (receiver)
       io.to(receiver.socketId).emit("getReadMessage", {
         chatId,
+        sender,
       });
   });
 
@@ -64,7 +63,9 @@ io.on("connection", async (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log(`${socket.user} disconnect`);
+    socket.broadcast.emit("userDisconnect", {
+      sender: socket.id,
+    });
   });
 });
 
@@ -79,6 +80,7 @@ const fetchUserBySocket = (socketId) => {
   const sockets = Array.from(io.sockets.sockets).map((socket) => {
     return { socketId: socket[0], user: socket[1].user };
   });
+
   return sockets.find((socket) => socket.socketId === socketId);
 };
 
